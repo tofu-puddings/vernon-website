@@ -3,6 +3,15 @@ const express = require('express');
 const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
 const bodyParser = require('body-parser');
+const path = require('path');
+
+// Serve static files from the 'public' directory (or '.' if your HTML is in the root)
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Optional: fallback to index.html for SPA routing
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 const app = express();
 const db = new sqlite3.Database('./vernon_appreciation.db');
