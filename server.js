@@ -8,11 +8,11 @@ const path = require('path');
 const app = express(); // <-- This must be first!
 
 // Serve static files from the 'public' directory
-app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Optional: fallback to index.html for SPA routing
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 const db = new sqlite3.Database('./vernon_appreciation.db');
