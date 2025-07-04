@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vernon's Smile Appreciation - Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* Prevent scrolling the whole page */
+    }
+    body {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+    .section {
+      box-sizing: border-box;
+      width: 100vw;
+      height: 100vh;
+      overflow-y: auto; /* Section itself scrolls if content is long */
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      position: relative;
+    }
+    /* Optional: keep floating backgrounds fixed */
+    .floating-bg {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
+    nav {
+      z-index: 2;
+      position: relative;
+    }
+    /* Make sure next-container, music-player, etc. are above bg */
+    .next-container,
+    .music-player-container-home,
+    .appreciation-board-root {
+      z-index: 2;
+      position: relative;
+    }
+    .facts-card {
+      background: #181c3a;
+      border-radius: 18px;
+      box-shadow: 0 2px 18px #23296944, 0 1.5px 8px #6d7bc644;
+      padding: 32px 24px 24px 24px;
+      max-width: 700px;
+      margin: 2em auto 2em auto;
+      color: #fff;
+      font-family: 'Barlow Condensed', Arial, sans-serif;
+    }
+    .facts-columns {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .facts-main {
+      flex: 2 1 320px;
+      min-width: 220px;
+    }
+    .facts-side {
+      flex: 1 1 180px;
+      min-width: 180px;
+    }
+    .facts-section-title {
+      color: #6d7bc6;
+      font-size: 1.18em;
+      font-weight: 700;
+      margin-top: 1.2em;
+      margin-bottom: 0.3em;
+      letter-spacing: 1px;
+      text-transform: lowercase;
+    }
+    .facts-section-content {
+      color: #fff;
+      font-size: 1.08em;
+      margin-bottom: 0.7em;
+      line-height: 1.5;
+    }
+    .facts-notes ul {
+      margin: 0.3em 0 0.3em 1.2em;
+      padding: 0;
+      color: #ff6464;
+      font-size: 0.98em;
+    }
+    .facts-notes li {
+      margin-bottom: 0.3em;
+    }
+    @media (max-width: 700px) {
+      .facts-columns {
+        flex-direction: column;
+        gap: 0.7em;
+      }
+      .facts-card {
+        padding: 18px 6px 12px 6px;
+      }
+    }
+    .facts-bg {
+      background: #f4f5fa;
+      border-radius: 18px;
+      box-shadow: 0 2px 18px #23296922, 0 1.5px 8px #6d7bc622;
+      padding: 32px 18px 24px 18px;
+      max-width: 700px;
+      margin: 2em auto 2em auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .facts-bubble {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px #6d7bc622;
+      padding: 16px 20px;
+      color: #232969;
+      font-size: 1.13em;
+      font-family: 'Barlow Condensed', Arial, sans-serif;
+      margin: 0 auto;
+      width: 100%;
+      max-width: 600px;
+      position: relative;
+      border-left: 5px solid #6d7bc6;
+      border-right: 5px solid #ff6464;
+      transition: box-shadow 0.18s;
+    }
+    .facts-bubble b {
+      color: #6d7bc6;
+    }
+    .facts-bubble:hover {
+      box-shadow: 0 4px 18px #ff646444, 0 2px 12px #6d7bc644;
+    }
+    .facts-fun-list {
+      margin: 0.5em 0 0.5em 1.2em;
+      padding: 0;
+      color: #ff6464;
+      font-size: 0.98em;
+    }
+    .facts-fun-list li {
+      margin-bottom: 0.3em;
+    }
+    @media (max-width: 700px) {
+      .facts-bg {
+        padding: 14px 2px 10px 2px;
+      }
+      .facts-bubble {
+        padding: 10px 8px;
+        font-size: 1em;
+      }
+    }
+    .about-card {
+      background: #f4f5fa;
+      border-radius: 18px;
+      box-shadow: 0 2px 18px #23296922, 0 1.5px 8px #6d7bc622;
+      padding: 0 0 24px 0;
+      max-width: 760px;
+      margin: 2em auto 2em auto;
+      color: #232969;
+      font-family: 'Barlow Condensed', Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-left: 8px solid #ff6464;
+      border-right: 8px solid #6d7bc6;
+    }
+    .about-banner {
+      position: relative;
+      width: 100%;
+      height: 120px;
+      border-radius: 18px 18px 0 0;
+      overflow: hidden;
+      background: url('images/cat-pattern.png') repeat center center / 180px auto, #fff;
+      margin-bottom: 0.5em;
+    }
+    .about-banner-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: blur(2px) brightness(0.85);
+      position: absolute;
+      left: 0; top: 0;
+      z-index: 1;
+    }
+    .about-banner-text {
+      position: relative;
+      z-index: 2;
+      color: #232969;
+      font-family: 'Barlow Condensed', Arial, sans-serif;
+      padding: 18px 24px 0 24px;
+      font-size: 1.5em;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 12px #fff8;
+    }
+    .about-banner-title {
+      color: #6d7bc6;
+      font-size: 1.3em;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+    }
+    .about-banner-desc {
+      color: #232969;
+      font-size: 0.7em;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      display: block;
+      margin-top: 0.2em;
+    }
+    .about-nav-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 0.7em 0 1.2em 0;
+    }
+    .about-nav-btn {
+      background: #fff;
+      border: 1.5px solid #dbe2f7;
+      border-radius: 8px;
+      color: #232969;
+      font-family: 'Barlow Condensed', Arial, sans-serif;
+      font-size: 1.08em;
+      font-weight: 600;
+      padding: 6px 18px;
+      text-decoration: none;
+      transition: background 0.13s, border 0.13s, color 0.13s;
+      box-shadow: 0 1px 4px #23296911;
+    }
+    .about-nav-btn:hover {
+      background: #6d7bc6;
+      color: #fff;
+      border-color: #6d7bc6;
+    }
+    .about-main-row {
+      display: flex;
+      gap: 32px;
+      padding: 0 24px;
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+      flex-wrap: wrap;
+    }
+    .about-left {
+      flex: 1 1 180px;
+      min-width: 160px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5em;
+    }
+    .about-profile-img {
+      width: 100%;
+      max-width: 260px;
+      height: auto;
+      object-fit: contain;
+      border-radius: 16px;
+      margin-bottom: 0.3em;
+      display: block;
+      box-shadow: none;
+      border: none;
+      background: none;
+    }
+    .about-profile-name {
+      font-size: 1.25em;
+      font-weight: 700;
+      color: #6d7bc6;
+      margin-bottom: 0.1em;
+      letter-spacing: 1px;
+      text-shadow: 0 0 8px #ff646433;
+    }
+    .about-profile-meta {
+      font-size: 1em;
+      color: #232969;
+      text-align: center;
+      font-weight: 500;
+    }
+    .about-right {
+      flex: 2 1 320px;
+      min-width: 220px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7em;
+    }
+    .about-section {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 1px 6px #6d7bc622;
+      padding: 12px 18px 10px 18px;
+      margin-bottom: 0.2em;
+      border-left: 5px solid #ff6464;
+      border-right: 5px solid #6d7bc6;
+    }
+    .about-section-title {
+      color: #ff6464;
+      font-size: 1.08em;
+      font-weight: 700;
+      margin-bottom: 0.2em;
+      letter-spacing: 1px;
+      text-transform: lowercase;
+      text-shadow: 0 0 8px #6d7bc633;
+    }
+    .about-section-content {
+      color: #232969;
+      font-size: 1.08em;
+      line-height: 1.5;
+    }
+    .about-notes {
+      background: #e9eaf6;
+      border-radius: 12px;
+      box-shadow: 0 1px 6px #6d7bc622;
+      padding: 14px 22px 10px 22px;
+      margin: 1.2em 24px 0 24px;
+    }
+    .about-notes ul {
+      color: #ff6464;
+      font-size: 1em;
+      margin: 0.3em 0 0.3em 1.2em;
+      padding: 0;
+    }
+    .about-notes li {
+      margin-bottom: 0.3em;
+    }
+    @media (max-width: 700px) {
+      .about-card {
+        padding: 0 0 10px 0;
+      }
+      .about-main-row {
+        flex-direction: column;
+        gap: 1.2em;
+        padding: 0 6px;
+      }
+      .about-left {
+        align-items: flex-start;
+        min-width: 0;
+      }
+      .about-profile-img {
+        width: 90px;
+        height: 90px;
+      }
+      .about-notes {
+        margin: 1.2em 6px 0 6px;
+        padding: 10px 10px 8px 10px;
+      }
+    }
+    .about-funfacts-btn {
+      position: relative;
+      cursor: pointer;
+    }
+    .about-funfacts-dropdown {
+      display: none;
+      position: absolute;
+      left: 0;
+      top: 110%;
+      background: #fff;
+      color: #232969;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px #23296922;
+      padding: 14px 18px;
+      min-width: 260px;
+      z-index: 10;
+      font-size: 1em;
+      font-family: 'Barlow Condensed', Arial, sans-serif;
+      border: 1.5px solid #dbe2f7;
+    }
+    .about-funfacts-btn:hover .about-funfacts-dropdown,
+    .about-funfacts-btn:focus .about-funfacts-dropdown {
+      display: block;
+    }
+    .about-funfacts-dropdown ul {
+      margin: 0;
+      padding-left: 1.1em;
+      color: #ff6464;
+    }
+    .about-funfacts-dropdown li {
+      margin-bottom: 0.5em;
+      font-size: 1em;
+    }
+    .about-funfacts-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 220px;
+      padding: 1.5em 0 1em 0;
+    }
+    .about-funfacts-card {
+      background: #f4f5fa;
+      border-radius: 18px;
+      box-shadow: 0 2px 18px #23296922, 0 1.5px 8px #6d7bc622;
+      padding: 32px 24px 24px 24px;
+      max-width: 600px;
+      color: #232969;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2em;
+      align-items: flex-start;
+    }
+    .about-funfacts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.1em;
+      width: 100%;
+    }
+    .about-funfacts-bubble {
+      background: #fff;
+      color: #232969;
+      border-radius: 18px 18px 18px 6px;
+      box-shadow: 0 1px 6px #6d7bc622;
+      padding: 16px 22px;
+      font-size: 1.08em;
+      line-height: 1.5;
+      max-width: 85%;
+      align-self: flex-start;
+      position: relative;
+      border-left: 5px solid #6d7bc6;
+      border-right: 5px solid #ff6464;
+      word-break: break-word;
+    }
+    .about-funfacts-bubble.right {
+      background: #e9eaf6;
+      color: #232969;
+      border-radius: 18px 18px 6px 18px;
+      align-self: flex-end;
+      border-left: 5px solid #ff6464;
+      border-right: 5px solid #6d7bc6;
+    }
+    @media (max-width: 700px) {
+      .about-funfacts-bubble, .about-funfacts-bubble.right {
+        max-width: 100%;
+        padding: 10px 12px;
+        font-size: 1em;
+      }
+    }
+    #gallery-modal {
+      z-index: 10000 !important;
+    }
+    .concept-photo-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      justify-content: center;
+      padding: 32px 0 32px 0;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+<div class="floating-bg">
+  <img src="images/vernon2.jpg" style="--i:0; --duration:20s; --scale:0.7;">
+  <img src="images/vernon3.jpg" style="--i:1; --duration:25s; --scale:0.77;">
+  <img src="images/vernon4.jpg" style="--i:2; --duration:30s; --scale:0.84;">
+  <img src="images/vernon5.jpg" style="--i:3; --duration:35s; --scale:0.91;">
+  <img src="images/vernon6.jpg" style="--i:4; --duration:20s; --scale:0.98;">
+  <img src="images/vernon7.jpg" style="--i:5; --duration:25s; --scale:1.05;">
+  <img src="images/vernon1.jpg" style="--i:6; --duration:30s; --scale:1.12;">
+  <img src="images/vernon8.jpg" style="--i:7; --duration:35s; --scale:0.77;">
+  <img src="images/vernon9.jpg" style="--i:8; --duration:20s; --scale:0.84;">
+  <img src="images/vernon10.jpg" style="--i:9; --duration:25s; --scale:0.91;">
+  <img src="images/vernon11.jpg" style="--i:10; --duration:30s; --scale:0.98;">
+  <img src="images/vernon12.jpg" style="--i:11; --duration:35s; --scale:1.05;">
+  <img src="images/vernon13.jpg" style="--i:12; --duration:20s; --scale:1.12;">
+  <img src="images/vernon14.jpg" style="--i:13; --duration:25s; --scale:0.77;">
+  <img src="images/vernon15.jpg" style="--i:14; --duration:30s; --scale:0.84;">
+</div>
+<div class="site-credit">
+    Website lovingly made by @247kwannie on Twitter/X.
+    <button id="logout-btn" style="float:right;margin-right:2em;background:#ff6464;color:#fff;border:none;border-radius:8px;padding:6px 18px;font-size:1em;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;cursor:pointer;">Logout</button>
+  </div>
+  <!-- Slides -->
+  <section class="section" id="section1">
+    <header>
+      <h1>Welcome, CARAT!</h1>
+    </header>
+    <nav>
+      <a href="#section1">Home</a>
+      <a href="#section3">Vernon Facts</a>
+      <a href="#section-appreciation">Appreciation Board</a>
+      <a href="concept.html">Photo Gallery</a>
+    </nav>
+    <div class="center">
+      <p>Welcome to a vernon centered website! Enjoy the music and discover more below!</p>
+    </div>
+    <!-- Music Player Visible Only On Home Section -->
+    <div class="music-player-container-home">
+      <div class="music-player-card">
+        <div class="turntable-area">
+          <div class="record-outline"></div>
+          <div class="record" id="record">
+            <div class="record-album-center">
+              <img id="albumArt" src="images/b9ec5d2071a7b6fc8042ffdb63a7cb2d.jpg" alt="Album Art">
+            </div>
+          </div>
+          <svg class="tonearm" viewBox="0 0 60 60">
+            <rect x="38" y="0" width="7" height="36" rx="3.5" fill="#6d7bc6" />
+            <circle cx="41.5" cy="36" r="7" fill="#ff6464" />
+            <rect x="0" y="30.5" width="40" height="7" rx="3.5" fill="#6d7bc6" />
+          </svg>
+        </div>
+        <div class="music-info-area">
+          <div class="music-info-upper">
+            <div class="now-playing-label">Now playing</div>
+            <div class="song-title" id="songTitle">Vernon — Black Eye</div>
+            <div class="song-meta" id="songMeta">Single</div>
+          </div>
+          <div class="progress-row">
+            <span class="progress-time" id="currentTime">0:00</span>
+            <div class="progress-container" id="progressContainer">
+              <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <span class="progress-time" id="duration">0:00</span>
+          </div>
+          <div class="controls-row">
+            <button class="control-btn" id="prevBtn" title="Previous">
+              <svg viewBox="0 0 48 48"><polygon points="32,10 14,24 32,38" /></svg>
+            </button>
+            <div class="controls-row">
+              <button class="control-btn play" id="playPauseBtn" title="Play/Pause">
+                <svg id="playIcon" viewBox="0 0 48 48"><polygon points="14,10 40,24 14,38" /></svg>
+                <svg id="pauseIcon" style="display:none;" viewBox="0 0 48 48">
+                  <rect x="14" y="12" width="7" height="24"/>
+                  <rect x="27" y="12" width="7" height="24"/>
+                </svg>
+              </button>
+            </div>
+            <button class="control-btn" id="nextBtn" title="Next">
+              <svg viewBox="0 0 48 48"><polygon points="16,10 34,24 16,38" /></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="next-container next-container-center">
+      <a href="#section3" class="next-section">
+        Next <span class="arrow">&#8595;</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="section" id="section3">
+    <div class="center">
+      <div class="about-card">
+        <div class="about-banner" style="background: url('images/cat-pattern.png') repeat center center / 180px auto, #fff; position: relative;">
+          <div style="position:absolute;left:0;top:0;width:100%;height:100%;background:rgba(255,255,255,0.72);z-index:1;"></div>
+          <div class="about-banner-text" style="position:relative;z-index:2;">
+            <span class="about-banner-title">Get to Know Vernon!</span><br>
+            <span class="about-banner-desc">Welcome to Vernon's profile space! Here you'll be able to get to know him a bit more &lt;3</span>
+          </div>
+        </div>
+        <div class="about-nav-row">
+          <a class="about-nav-btn" href="#" id="about-profile-btn">PROFILE</a>
+          <a class="about-nav-btn" href="#" id="about-funfacts-btn">FUN FACTS</a>
+        </div>
+        <div class="about-main-row" id="about-main-row">
+          <div class="about-left">
+            <img src="images/kpoppapi.jpg" alt="Vernon Profile" class="about-profile-img">
+            <div class="about-profile-name">Vernon</div>
+            <div class="about-profile-meta">he/him • Feb 18, 1998 • New York, USA</div>
+          </div>
+          <div class="about-right">
+            <div class="about-section">
+              <div class="about-section-title">ABOUT</div>
+              <div class="about-section-content">
+                Real Name: Hansol Vernon Chwe<br>
+                Group: SEVENTEEN (Hip-Hop Team)<br>
+                Position: Lead Rapper, Sub Vocalist, Visual
+              </div>
+            </div>
+            <div class="about-section">
+              <div class="about-section-title">LIKES</div>
+              <div class="about-section-content">
+                Music, freestyle rapping, cats, coffee, his sister Sofia
+              </div>
+            </div>
+            <div class="about-section">
+              <div class="about-section-title">DISLIKES</div>
+              <div class="about-section-content">
+                Math, cold weather, periods, peanuts (allergy)
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="about-funfacts-row" id="about-funfacts-row" style="display:none;">
+          <div class="about-funfacts-card">
+            <div class="about-section-title" style="font-size:1.3em;">Fun Facts</div>
+            <div class="about-funfacts-list">
+              <div class="about-funfacts-bubble">He is allergic to peanuts. (Going Seventeen 2020 Ep 15)</div>
+              <div class="about-funfacts-bubble right">He appeared in Man of K's "Falling" MV, Hello Venus' "Venus" MV, and Orange Caramel's "My Copycat" MV.</div>
+              <div class="about-funfacts-bubble">Vernon is close with PENTAGON's Kino. He even bought Kino a phone case when he was in Japan.</div>
+              <div class="about-funfacts-bubble right">His mom moved in Korea as well (when he was 5) but since she doesn't speak Korean, at home they kept talking in English, that's why Vernon's English is so good.</div>
+              <div class="about-funfacts-bubble">When laughing he either claps, hits a thing, clings to someone or just falls out of laughter.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="next-container">
+      <a href="#section-appreciation" class="next-section">
+        Next <span class="arrow">&#8595;</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="section" id="section-appreciation">
+  <link rel="stylesheet" href="AppreciationBoard.css">
+  <div class="center">
+    <h2>Appreciation Board</h2>
+    <div class="appreciation-board-root">
+      <div class="messages-list" id="messages-list"></div>
+      <form class="message-input-row" id="appreciation-form">
+        <textarea
+          type="text"
+          maxLength="50"
+          placeholder="Enter your display name (required)"
+          id="display-name-input"
+          autocomplete="off"
+          required
+        ></textarea>
+        <div class="input-divider"></div>
+        <textarea
+          type="text"
+          maxLength="250"
+          placeholder="Type an appreciation message for Vernon…"
+          id="message-input"
+          autocomplete="off"
+          required
+        ></textarea>
+        <button type="submit" id="send-btn" title="Send">
+          <svg width="28" height="28" viewBox="0 0 24 24">
+            <polygon points="2,21 23,12 2,3" fill="#ff6464"/>
+          </svg>
+        </button>
+        <div class="char-count" id="char-count">250 / 250</div>
+      </form>
+      <div class="error-text" id="error-text" style="display:none;"></div>
+    </div>
+    <!-- Move Top button here, styled as a floating button at the bottom -->
+    <div class="next-container" style="position:static; margin-top:32px; padding-bottom:0;">
+      <a href="#section1" class="next-section" >
+        <span class="to-top-text">Top</span>
+        <span class="arrow">&#8593;</span>
+      </a>
+    </div>
+  </div>
+    </section>
+
+  <!-- Hidden and persistent audio element -->
+  <audio id="vernonAudio" preload="auto" loop style="display:none;">
+    <source id="audioSource" src="audio/M5OMWJ5m0ldf.128.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // Fade in body on load, even if other JS fails
+    window.addEventListener('DOMContentLoaded', function() {
+      document.body.style.opacity = '1';
+    });
+
+    // APPRECIATION BOARD FUNCTIONALITY (unchanged)
+    const API_URL = "https://vernon-website.onrender.com/api/messages";;
+  const messagesList = document.getElementById('messages-list');
+  const form = document.getElementById('appreciation-form');
+  const input = document.getElementById('message-input');
+  const displayNameInput = document.getElementById('display-name-input');
+  const charCount = document.getElementById('char-count');
+  const errorText = document.getElementById('error-text');
+  let sending = false;
+
+
+    function escapeHTML(str) {
+      return str.replace(/[&<>'"]/g, tag => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;',"'" :'&#39;','"':'&quot;'
+      }[tag]));
+    }
+
+    function renderMessages(messages) {
+    messagesList.innerHTML = messages.map(msg => {
+      // Parse the timestamp to a Date object
+      const date = new Date(msg.timestamp);
+      // Format date and time in user's local timezone
+      const dateString = date.toLocaleDateString();
+      const timeString = date.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      });
+      return `
+        <div class="message-row">
+          <div class="message-content">${escapeHTML(msg.message)}</div>
+          <div class="message-meta">
+            <span>${escapeHTML(msg.display_name)}</span>
+            <span class="timestamp">${dateString} ${timeString}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+
+async function fetchMessages() {
+    try {
+      const res = await fetch(API_URL);
+        if (!res.ok) throw new Error('Failed to fetch messages.');
+        const data = await res.json();
+        renderMessages(data);
+        errorText.style.display = "none";
+      } catch (e) {
+        errorText.style.display = "";
+        errorText.textContent = "Could not fetch messages.";
+      }
+    }
+
+    // Update character count and button state
+  function updateInputState() {
+    const left = 250 - input.value.length;
+    charCount.textContent = `${left} / 250`;
+    if (left < 0) input.value = input.value.slice(0, 250);
+    errorText.style.display = "none";
+    // Disable send if display name or message is empty
+    document.getElementById('send-btn').disabled =
+      !displayNameInput.value.trim() || !input.value.trim();
+  }
+  input.addEventListener('input', updateInputState);
+  displayNameInput.addEventListener('input', updateInputState);
+
+  // Allow Enter to submit the form (but Shift+Enter for newline)
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      form.requestSubmit();
+    }
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (sending) return;
+    const message = input.value.trim();
+    const display_name = displayNameInput.value.trim();
+    if (!display_name) {
+      errorText.style.display = "";
+      errorText.textContent = "Display name cannot be empty.";
+      return;
+    }
+    if (!message) {
+      errorText.style.display = "";
+      errorText.textContent = "Message cannot be empty.";
+      return;
+    }
+    sending = true;
+    try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ display_name, message })
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        errorText.style.display = "";
+        errorText.textContent = err.error || "Failed to send.";
+      } else {
+        input.value = "";
+        charCount.textContent = "250 / 250";
+        errorText.style.display = "none";
+        fetchMessages();
+      }
+    } catch {
+      errorText.style.display = "";
+      errorText.textContent = "Network error.";
+    }
+    sending = false;
+  });
+
+  // Poll every 3 seconds
+  fetchMessages();
+  setInterval(fetchMessages, 3000);
+
+    // MUSIC PLAYER
+    const songs = [
+      {
+        title: "Vernon — Black Eye",
+        meta: "Single",
+        audio: "audio/M5OMWJ5m0ldf.128.mp3",
+        albumArt: "images/b9ec5d2071a7b6fc8042ffdb63a7cb2d.jpg"
+      },
+      {
+        title: "Vernon — Shining Star",
+        meta: "Single",
+        audio: "audio/shiningstar.mp3", // Replace with real file later
+        albumArt: "images/hbd.jpg"
+      }
+    ];
+    let currentSong = 0;
+    const audio = document.getElementById('vernonAudio');
+    const record = document.getElementById('record');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const playIcon = document.getElementById('playIcon');
+    const pauseIcon = document.getElementById('pauseIcon');
+    const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+    const currentTimeSpan = document.getElementById('currentTime');
+    const durationSpan = document.getElementById('duration');
+    const albumArt = document.getElementById('albumArt');
+    const songTitle = document.getElementById('songTitle');
+    const songMeta = document.getElementById('songMeta');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function loadSong(idx) {
+      const song = songs[idx];
+      document.getElementById('audioSource').src = song.audio;
+      audio.load();
+      albumArt.src = song.albumArt;
+      songTitle.textContent = song.title;
+      songMeta.textContent = song.meta;
+      // Optionally reset progress bar
+      progressBar.style.width = "0%";
+      currentTimeSpan.textContent = "0:00";
+      durationSpan.textContent = "0:00";
+    }
+
+    if (playPauseBtn && audio) {
+      playPauseBtn.onclick = () => {
+        if (audio.paused) {
+          audio.play();
+        } else {
+          audio.pause();
+        }
+      };
+
+      audio.onplay = () => {
+        playIcon.style.display = "none";
+        pauseIcon.style.display = "block";
+        record.classList.add('playing');
+      };
+      audio.onpause = () => {
+        playIcon.style.display = "block";
+        pauseIcon.style.display = "none";
+        record.classList.remove('playing');
+      };
+      audio.onended = () => {
+        playIcon.style.display = "block";
+        pauseIcon.style.display = "none";
+        record.classList.remove('playing');
+        audio.currentTime = 0;
+      };
+
+      audio.ontimeupdate = () => {
+        if (audio.duration) {
+          const percent = audio.currentTime / audio.duration;
+          progressBar.style.width = percent * 100 + "%";
+          currentTimeSpan.textContent = formatTime(audio.currentTime);
+          durationSpan.textContent = formatTime(audio.duration);
+        }
+      };
+      progressContainer.addEventListener('click', function (e) {
+        if (!audio.duration) return;
+        const rect = progressContainer.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const percent = x / rect.width;
+        audio.currentTime = percent * audio.duration;
+      });
+      function formatTime(sec) {
+        sec = Math.floor(sec);
+        const min = Math.floor(sec / 60);
+        const s = sec % 60;
+        return min + ":" + (s < 10 ? "0" : "") + s;
+      }
+      // Song switching
+      prevBtn.onclick = () => {
+        currentSong = (currentSong - 1 + songs.length) % songs.length;
+        loadSong(currentSong);
+        audio.play();
+      };
+      nextBtn.onclick = () => {
+        currentSong = (currentSong + 1) % songs.length;
+        loadSong(currentSong);
+        audio.play();
+      };
+      // Initial load
+      loadSong(currentSong);
+    }
+
+    // Fun Facts toggle logic
+    document.addEventListener('DOMContentLoaded', function() {
+      var funfactsBtn = document.getElementById('about-funfacts-btn');
+      var profileBtn = document.getElementById('about-profile-btn');
+      var mainRow = document.getElementById('about-main-row');
+      var funfactsRow = document.getElementById('about-funfacts-row');
+      if(funfactsBtn && mainRow && funfactsRow) {
+        funfactsBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          mainRow.style.display = 'none';
+          funfactsRow.style.display = 'flex';
+        });
+        if(profileBtn) {
+          profileBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            funfactsRow.style.display = 'none';
+            mainRow.style.display = 'flex';
+          });
+        }
+      }
+    });
+
+    // LOGOUT BUTTON
+    document.getElementById('logout-btn').onclick = function() {
+      localStorage.removeItem('loggedIn');
+      window.location.href = 'login.html';
+    };
+  </script>
+</div>
+
+</body>
+</html>
