@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vernon Appreciation Board</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- You can copy your AppreciationBoard.css content here or link to it -->
+  <link rel="stylesheet" href="AppreciationBoard.css">
+</head>
+<body>
+  <div class="appreciation-board-root">
+    <div class="messages-list" id="messages-list"></div>
+    <form class="message-input-row" id="appreciation-form">
+      <input
+        type="text"
+        maxLength="250"
+        placeholder="Type an appreciation message for Vernon…"
+        id="message-input"
+        autocomplete="off"
+      />
+      <button type="submit" id="send-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24">
+          <polygon points="2,21 23,12 2,3" fill="#ff6490"/>
+        </svg>
+      </button>
+      <div class="char-count" id="char-count">250 / 250</div>
+    </form>
+    <div class="error-text" id="error-text" style="display:none;"></div>
+  </div>
+
+  <script>
+    const API_URL = "http://localhost:4000/api/messages";
+    const messagesList = document.getElementById('messages-list');
+    const form = document.getElementById('appreciation-form');
+    const input = document.getElementById('message-input');
+    const charCount = document.getElementById('char-count');
+    const errorText = document.getElementById('error-text');
+    let sending = false;
+
+    function escapeHTML(str) {
+      return str.replace(/[&<>'"]/g, 
+        tag => ({
+          '&':'&amp;','<':'&lt;','>':'&gt;',"'" :'&#39;','"':'&quot;'
+        }[tag])
+      );
+    }
+
+    function renderMessages(messages) {
+      messagesList.innerHTML = messages.map(msg => `
+        <div class="message-row">
+          <div class="message-content">${escapeHTML(msg.message)}</div>
+          <div class="message-meta">
+            <span>Anonymous</span>
+            <span class="timestamp">${
+              new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            }</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function fetchMessages() {
+      try {
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error('Failed to fetch messages.');
+        const data = await res.json();
+        renderMessages(data);
+      } catch (e) {
+        errorText.style.display = "";
+        errorText.textContent = "Could not fetch messages.";
+      }
+    }
+
+    input.addEventListener('input', () => {
+      const left = 250 - input.value.length;
+      charCount.textContent = `${left} / 250`;
+      if (left < 0) input.value = input.value.slice(0, 250);
+      errorText.style.display = "none";
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (sending) return;
+      const message = input.value.trim();
+      if (!message) {
+        errorText.style.display = "";
+        errorText.textContent = "Message cannot be empty.";
+        return;
+      }
+      sending = true;
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message })
+        });
+        if (!res.ok) {
+          const err = await res.json();
+          errorText.style.display = "";
+          errorText.textContent = err.error || "Failed to send.";
+        } else {
+          input.value = "";
+          charCount.textContent = "250 / 250";
+          errorText.style.display = "none";
+          fetchMessages();
+        }
+      } catch {
+        errorText.style.display = "";
+        errorText.textContent = "Network error.";
+      }
+      sending = false;
+    });
+
+    // Poll every 3 seconds
+    fetchMessages();
+    setInterval(fetchMessages, 3000);
+  </script>
+</body>
+</html>
