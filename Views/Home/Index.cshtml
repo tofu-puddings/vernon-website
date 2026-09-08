@@ -1,303 +1,228 @@
 @model VernonFanSite.Models.HomeViewModel
 @inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Arcade";
     var assetBase = Configuration["AssetBaseUrl"]?.TrimEnd('/') ?? "";
 }
 
-<!-- ===== HERO ===== -->
-<div class="flex flex-col lg:flex-row items-center gap-16 py-8 lg:py-20">
-    <div class="flex-1 text-center lg:text-left">
-        <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-slate-900 dark:text-white">
-            HANSOL<br>VERNON<br>CHWE.
-        </h1>
-        <p class="text-lg sm:text-xl text-slate-700 dark:text-slate-300 mt-4 max-w-md mx-auto lg:mx-0">
-            Artist. Rapper. Visual. — The complete archive.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 mt-8 justify-center lg:justify-start">
-            <button class="btn-primary" data-modal-toggle="factsModal">Profile & Facts</button>
-            <button class="btn-primary" data-modal-toggle="discographyModal">Discography</button>
-            <button class="btn-primary" data-modal-toggle="messagesModal">Fan Messages</button>
+<!-- TAB 1: PROFILE -->
+<div class="tab-content active" data-tab="0" data-image="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/vernon/kpoppapi.jpg") : assetBase + "/images/vernon/kpoppapi.jpg")">
+    <div class="profile-grid">
+        <div>
+            <div class="name">✦ PROFILE ✦</div>
+            <p style="color: #888; font-size: 0.9rem;">SEVENTEEN / Hip-Hop Team</p>
         </div>
-    </div>
-    <div class="flex-1 flex justify-center lg:justify-end">
-        <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/vernon/kpoppapi.jpg") : assetBase + "/images/vernon/kpoppapi.jpg")"
-             alt="Vernon"
-             class="w-full max-w-md lg:max-w-lg rounded-3xl shadow-xl" />
+        <ul class="fact-list">
+            @foreach (var fact in Model.FunFacts)
+            {
+                <li>@fact</li>
+            }
+        </ul>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem;">
+            <span style="background: #1a0b2e; padding: 0.25rem 0.75rem; border-radius: 20px; border: 1px solid #00f3ff;">🇺🇸 NYC</span>
+            <span style="background: #1a0b2e; padding: 0.25rem 0.75rem; border-radius: 20px; border: 1px solid #ff00cc;">🎤 Rapper</span>
+            <span style="background: #1a0b2e; padding: 0.25rem 0.75rem; border-radius: 20px; border: 1px solid #00f3ff;">🐱 Cat Dad</span>
+        </div>
     </div>
 </div>
 
-<!-- ===== COUNTDOWN ===== -->
-<section class="py-12 border-t border-slate-200 dark:border-slate-800 mt-8">
-    <div class="text-center max-w-3xl mx-auto">
-        <h2 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mb-2">⏳ Next Birthday</h2>
-        <p class="text-slate-500 dark:text-slate-400 mb-6">Counting down to February 18, 2027</p>
-        <div id="countdown" class="flex flex-wrap justify-center gap-4 sm:gap-6">
-            <div class="text-center">
-                <div class="countdown-number" id="days">00</div>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">Days</p>
-            </div>
-            <div class="text-center">
-                <div class="countdown-number" id="hours">00</div>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">Hours</p>
-            </div>
-            <div class="text-center">
-                <div class="countdown-number" id="minutes">00</div>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">Minutes</p>
-            </div>
-            <div class="text-center">
-                <div class="countdown-number" id="seconds">00</div>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">Seconds</p>
-            </div>
+<!-- TAB 2: DISCOGRAPHY -->
+<div class="tab-content" data-tab="1" data-image="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/fml.jpg") : assetBase + "/images/albums/fml.jpg")">
+    <h3 style="font-family: 'VT323', monospace; color: #00f3ff; margin-bottom: 1rem;">🎵 DISCOGRAPHY</h3>
+    <div class="disco-grid">
+        <div class="disco-card">
+            <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/17isrighthere.jpg") : assetBase + "/images/albums/17isrighthere.jpg")" onerror="this.src='https://placehold.co/120x120?text=2024'"/>
+            <div><strong>17 Is Right Here</strong></div>
+            <div class="year">2024 · Best</div>
+        </div>
+        <div class="disco-card">
+            <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/spillthefeels.jpg") : assetBase + "/images/albums/spillthefeels.jpg")" onerror="this.src='https://placehold.co/120x120?text=2024'"/>
+            <div><strong>Spill The Feels</strong></div>
+            <div class="year">2024 · Mini 12</div>
+        </div>
+        <div class="disco-card">
+            <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/shohikigen.jpg") : assetBase + "/images/albums/shohikigen.jpg")" onerror="this.src='https://placehold.co/120x120?text=2024'"/>
+            <div><strong>Shohikigen</strong></div>
+            <div class="year">2024 · JP Single</div>
+        </div>
+        <div class="disco-card">
+            <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/fml.jpg") : assetBase + "/images/albums/fml.jpg")" onerror="this.src='https://placehold.co/120x120?text=2023'"/>
+            <div><strong>FML</strong></div>
+            <div class="year">2023 · Mini 10</div>
+        </div>
+        <div class="disco-card">
+            <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/seventeenthheaven.jpg") : assetBase + "/images/albums/seventeenthheaven.jpg")" onerror="this.src='https://placehold.co/120x120?text=2023'"/>
+            <div><strong>Seventeenth Heaven</strong></div>
+            <div class="year">2023 · Mini 11</div>
+        </div>
+        <div class="disco-card">
+            <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/17carat.jpg") : assetBase + "/images/albums/17carat.jpg")" onerror="this.src='https://placehold.co/120x120?text=2015'"/>
+            <div><strong>17 Carat</strong></div>
+            <div class="year">2015 · Debut</div>
         </div>
     </div>
-</section>
+</div>
 
-<!-- ===== YOUTUBE ===== -->
-<section class="py-12 border-t border-slate-200 dark:border-slate-800">
-    <div class="max-w-5xl mx-auto">
-        <h2 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white text-center mb-2">🎬 Best Moments</h2>
-        <p class="text-slate-500 dark:text-slate-400 text-center mb-8">Iconic performances</p>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
-                <iframe class="w-full h-full" src="https://www.youtube.com/embed/Yg2gp7RMTdQ" title="Super" allowfullscreen loading="lazy"></iframe>
+<!-- TAB 3: ALBUMS (Timeline) -->
+<div class="tab-content" data-tab="2" data-image="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/17isrighthere.jpg") : assetBase + "/images/albums/17isrighthere.jpg")">
+    <h3 style="font-family: 'VT323', monospace; color: #ff00cc; margin-bottom: 1rem;">📸 ALBUM TIMELINE</h3>
+    <div class="album-timeline">
+        <div class="album-era">
+            <span class="era-label">2024</span>
+            <div class="pics">
+                <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/vernon/vernon1.jpg") : assetBase + "/images/vernon/vernon1.jpg")" />
+                <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/vernon/vernon2.jpg") : assetBase + "/images/vernon/vernon2.jpg")" />
+                <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/vernon/vernon3.jpg") : assetBase + "/images/vernon/vernon3.jpg")" />
             </div>
-            <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
-                <iframe class="w-full h-full" src="https://www.youtube.com/embed/Pu1aQvm5MrU" title="Left & Right" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="album-era">
+            <span class="era-label">2023</span>
+            <div class="pics">
+                <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/vernon/vernon4.jpg") : assetBase + "/images/vernon/vernon4.jpg")" />
+                <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/vernon/vernon5.jpg") : assetBase + "/images/vernon/vernon5.jpg")" />
+                <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/vernon/vernon6.jpg") : assetBase + "/images/vernon/vernon6.jpg")" />
             </div>
-            <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
-                <iframe class="w-full h-full" src="https://www.youtube.com/embed/gRnuFC4Ualw" title="Hot" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="album-era">
+            <span class="era-label">2022</span>
+            <div class="pics">
+                <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/vernon/vernon7.jpg") : assetBase + "/images/vernon/vernon7.jpg")" />
+                <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/vernon/vernon8.jpg") : assetBase + "/images/vernon/vernon8.jpg")" />
             </div>
-            <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
-                <iframe class="w-full h-full" src="https://www.youtube.com/embed/lXGcT8M5KbI" title="I Can't Run Away" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="album-era">
+            <span class="era-label">2015</span>
+            <div class="pics">
+                <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/vernon/vernon9.jpg") : assetBase + "/images/vernon/vernon9.jpg")" />
+                <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/vernon/vernon10.jpg") : assetBase + "/images/vernon/vernon10.jpg")" />
             </div>
         </div>
     </div>
-</section>
+</div>
+
+<!-- TAB 4: RANDOM PLAY (Bonus) -->
+<div class="tab-content" data-tab="3" data-image="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/vernon/vernon11.jpg") : assetBase + "/images/vernon/vernon11.jpg")">
+    <h3 style="font-family: 'VT323', monospace; color: #00f3ff; margin-bottom: 1rem;">🎰 RANDOM VERNON</h3>
+    <div class="random-box">
+        <p style="color: #888;">PRESS SELECT TO GET A RANDOM FACT</p>
+        <div class="quote" id="randomQuote">"Time is gold."</div>
+        <button class="btn-spin" id="spinBtn">⟳ SPIN</button>
+    </div>
+</div>
 
 <!-- ========================================================== -->
-<!-- ===== MODALS ===== -->
-<!-- ========================================================== -->
-
-<!-- Facts Modal -->
-<div id="factsModal" style="display:none;">
-    <div class="flex flex-col sm:flex-row items-start gap-6">
-        <div class="flex-shrink-0 text-center sm:text-left">
-            <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/vernon/kpoppapi.jpg") : assetBase + "/images/vernon/kpoppapi.jpg")"
-                 class="w-32 h-32 rounded-full object-cover mx-auto sm:mx-0" alt="Profile" />
-            <h4 class="font-bold text-xl mt-2 dark:text-white">Vernon</h4>
-            <p class="text-sm text-slate-500 dark:text-slate-400">SEVENTEEN / Hip-Hop Team</p>
-        </div>
-        <div class="flex-1 w-full">
-            <h2 class="section-title dark:text-white mb-4">Profile & Facts</h2>
-            <ul class="divide-y divide-slate-100 dark:divide-slate-800">
-                @foreach (var fact in Model.FunFacts)
-                {
-                    <li class="fact-item flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                        <span class="text-indigo-500 dark:text-indigo-400 mt-1">•</span>
-                        <span>@fact</span>
-                    </li>
-                }
-            </ul>
-        </div>
-    </div>
-    <div class="mt-6 text-right">
-        <button class="modal-close-btn text-sm text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300">Close</button>
-    </div>
-</div>
-
-<!-- Gallery Modal -->
-<div id="galleryModal" style="display:none;">
-    <div class="text-center mb-6">
-        <h2 class="section-title dark:text-white">✨ Happy Vibes Collection</h2>
-        <p class="text-slate-500 dark:text-slate-400 max-w-md mx-auto mt-2">Vernon's best moments</p>
-    </div>
-    <div class="gallery-grid">
-        @for (int i = 1; i <= 15; i++)
-        {
-            <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content($"~/images/vernon/vernon{i}.jpg") : assetBase + $"/images/vernon/vernon{i}.jpg")"
-                 class="gallery-img"
-                 alt="Vernon @i"
-                 onerror="this.style.display='none'" />
-        }
-    </div>
-    <div class="mt-6 text-right">
-        <button class="modal-close-btn text-sm text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300">Close</button>
-    </div>
-</div>
-
-<!-- Messages Modal -->
-<div id="messagesModal" style="display:none;">
-    <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
-        <h2 class="section-title dark:text-white">Fan Messages</h2>
-        <div class="flex gap-2">
-            <button class="tab-btn active-tab" data-tab="read-tab">Read</button>
-            <button class="tab-btn" data-tab="post-tab">Post</button>
-        </div>
-    </div>
-
-    <div id="read-tab" class="tab-pane active">
-        <div style="max-height:50vh; overflow-y:auto;">
-            @if (Model.Messages.Any())
-            {
-                foreach (var msg in Model.Messages)
-                {
-                    <div class="message-card dark:bg-slate-800 dark:border-indigo-400">
-                        <div class="flex items-start gap-3">
-                            <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center text-indigo-600 dark:text-indigo-300 font-bold text-sm flex-shrink-0">
-                                @msg.SenderName.Substring(0,1).ToUpper()
-                            </div>
-                            <div>
-                                <p class="text-slate-800 dark:text-slate-100">"@msg.MessageContent"</p>
-                                <span class="text-sm text-slate-500 dark:text-slate-400">— @msg.SenderName</span>
-                            </div>
-                        </div>
-                    </div>
-                }
-            }
-            else
-            {
-                <p class="text-center text-slate-400 dark:text-slate-500 py-8">No messages yet. Be the first!</p>
-            }
-        </div>
-    </div>
-
-    <div id="post-tab" class="tab-pane" style="display:none;">
-        <form action="/Home/PostMessage" method="post" class="mt-4" id="messageForm">
-            @Html.AntiForgeryToken()
-            <div class="mb-4">
-                <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Your Name</label>
-                <input type="text" name="sender" class="input-clean" maxlength="30" required />
-            </div>
-            <div class="mb-4">
-                <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Your Message</label>
-                <textarea name="content" rows="4" class="input-clean" maxlength="500" required></textarea>
-                <p class="text-xs text-slate-400 dark:text-slate-500 mt-1 text-right"><span id="charCount">0</span>/500</p>
-            </div>
-            <button type="submit" class="btn-primary w-full">Send Message</button>
-        </form>
-    </div>
-
-    <div class="mt-4 text-right">
-        <button class="modal-close-btn text-sm text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300">Close</button>
-    </div>
-</div>
-
-<!-- Discography Modal -->
-<div id="discographyModal" style="display:none;">
-    <h2 class="section-title dark:text-white mb-6">Discography</h2>
-    <div style="max-height:60vh; overflow-y:auto;">
-
-        <h4 class="font-bold text-xl border-b border-slate-200 dark:border-slate-700 pb-2 mb-4 dark:text-white">2024</h4>
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-6 mb-8">
-            <div>
-                <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/17isrighthere.jpg") : assetBase + "/images/albums/17isrighthere.jpg")"
-                     class="w-full rounded-xl shadow-sm hover:shadow-md transition" alt="17 Is Right Here" onerror="this.src='https://placehold.co/300x300?text=17+Is+Right+Here'" />
-                <p class="font-bold mt-2 dark:text-white">17 Is Right Here</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Best Album</p>
-            </div>
-            <div>
-                <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/spillthefeels.jpg") : assetBase + "/images/albums/spillthefeels.jpg")"
-                     class="w-full rounded-xl shadow-sm hover:shadow-md transition" alt="Spill The Feels" onerror="this.src='https://placehold.co/300x300?text=Spill+The+Feels'" />
-                <p class="font-bold mt-2 dark:text-white">Spill The Feels</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">12th Mini Album</p>
-            </div>
-            <div>
-                <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/shohikigen.jpg") : assetBase + "/images/albums/shohikigen.jpg")"
-                     class="w-full rounded-xl shadow-sm hover:shadow-md transition" alt="Shohikigen" onerror="this.src='https://placehold.co/300x300?text=Shohikigen'" />
-                <p class="font-bold mt-2 dark:text-white">Shohikigen</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">JP Single</p>
-            </div>
-        </div>
-
-        <h4 class="font-bold text-xl border-b border-slate-200 dark:border-slate-700 pb-2 mb-4 dark:text-white">2023</h4>
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-6 mb-8">
-            <div>
-                <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/fml.jpg") : assetBase + "/images/albums/fml.jpg")"
-                     class="w-full rounded-xl shadow-sm hover:shadow-md transition" alt="FML" onerror="this.src='https://placehold.co/300x300?text=FML'" />
-                <p class="font-bold mt-2 dark:text-white">FML</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">10th Mini Album</p>
-            </div>
-            <div>
-                <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/seventeenthheaven.jpg") : assetBase + "/images/albums/seventeenthheaven.jpg")"
-                     class="w-full rounded-xl shadow-sm hover:shadow-md transition" alt="Seventeenth Heaven" onerror="this.src='https://placehold.co/300x300?text=Seventeenth+Heaven'" />
-                <p class="font-bold mt-2 dark:text-white">Seventeenth Heaven</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">11th Mini Album</p>
-            </div>
-        </div>
-
-        <h4 class="font-bold text-xl border-b border-slate-200 dark:border-slate-700 pb-2 mb-4 dark:text-white">2015</h4>
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-6">
-            <div>
-                <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/17carat.jpg") : assetBase + "/images/albums/17carat.jpg")"
-                     class="w-full rounded-xl shadow-sm hover:shadow-md transition" alt="17 Carat" onerror="this.src='https://placehold.co/300x300?text=17+Carat'" />
-                <p class="font-bold mt-2 dark:text-white">17 Carat</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">1st Mini Album</p>
-            </div>
-        </div>
-    </div>
-    <div class="mt-6 text-right">
-        <button class="modal-close-btn text-sm text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300">Close</button>
-    </div>
-</div>
-
 <!-- ===== SCRIPTS ===== -->
+@section Scripts {
 <script>
-    // ── COUNTDOWN ──
-    document.addEventListener('DOMContentLoaded', function() {
-        const target = new Date('February 18, 2027 00:00:00').getTime();
-        function update() {
-            const now = Date.now();
-            const diff = target - now;
-            if (diff < 0) {
-                ['days','hours','minutes','seconds'].forEach(id => document.getElementById(id).textContent = '🎉');
-                return;
-            }
-            document.getElementById('days').textContent = String(Math.floor(diff / (1000*60*60*24))).padStart(2, '0');
-            document.getElementById('hours').textContent = String(Math.floor((diff % (1000*60*60*24)) / (1000*60*60))).padStart(2, '0');
-            document.getElementById('minutes').textContent = String(Math.floor((diff % (1000*60*60)) / (1000*60))).padStart(2, '0');
-            document.getElementById('seconds').textContent = String(Math.floor((diff % (1000*60)) / 1000)).padStart(2, '0');
-        }
-        update(); setInterval(update, 1000);
-    });
+    // ── TAB DATA ──
+    const tabs = document.querySelectorAll('.tab-content');
+    const bgArt = document.getElementById('bgArt');
+    const rightThumb = document.getElementById('rightThumb');
+    let currentTab = 0;
+    const totalTabs = tabs.length;
 
-    // ── TAB SWITCHING ──
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const tabId = this.dataset.tab;
-                const parent = this.closest('.modal-content');
-                if (!parent) return;
-                parent.querySelectorAll('.tab-pane').forEach(pane => pane.style.display = 'none');
-                parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-tab'));
-                document.getElementById(tabId).style.display = 'block';
-                this.classList.add('active-tab');
-            });
+    // ── POPULATE FAN MESSAGES (from server model) ──
+    const msgList = document.getElementById('msgList');
+    @if (Model.Messages.Any())
+    {
+        foreach (var msg in Model.Messages)
+        {
+            <text>
+                const div = document.createElement('div');
+                div.className = 'msg-item';
+                div.innerHTML = `<div class="sender">${'@msg.SenderName'}</div><div class="text">"${'@msg.MessageContent'}"</div>`;
+                msgList.appendChild(div);
+            </text>
+        }
+    }
+    else
+    {
+        <text>msgList.innerHTML = '<div style="color: #888; text-align: center; padding: 1rem;">No messages yet. Be the first!</div>';</text>
+    }
+
+    // ── SWITCH TAB FUNCTION ──
+    function switchTab(index) {
+        if (index < 0) index = totalTabs - 1;
+        if (index >= totalTabs) index = 0;
+        currentTab = index;
+
+        tabs.forEach((tab, i) => {
+            tab.classList.toggle('active', i === index);
         });
+
+        const active = tabs[index];
+        const img = active.dataset.image;
+        if (img) {
+            bgArt.style.backgroundImage = `url(${img})`;
+            rightThumb.src = img;
+        }
+
+        // Scroll to top of content smoothly
+        document.getElementById('centerPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ── INIT ──
+    switchTab(0);
+
+    // ── JOYSTICK / DPAD CONTROLS ──
+    document.getElementById('leftBtn').addEventListener('click', () => switchTab(currentTab - 1));
+    document.getElementById('rightBtn').addEventListener('click', () => switchTab(currentTab + 1));
+    document.getElementById('selectBtn').addEventListener('click', () => {
+        // Random select: jump to random tab
+        const rand = Math.floor(Math.random() * totalTabs);
+        switchTab(rand);
+        showToast('🎲 SELECTED: ' + tabs[rand].querySelector('h3')?.innerText || 'Tab ' + (rand+1));
+    });
+    document.getElementById('bigSelectBtn').addEventListener('click', () => {
+        const rand = Math.floor(Math.random() * totalTabs);
+        switchTab(rand);
+        showToast('🎮 ARCADE SELECT: ' + tabs[rand].querySelector('h3')?.innerText || 'Tab ' + (rand+1));
     });
 
-    // ── CHARACTER COUNTER ──
-    document.addEventListener('DOMContentLoaded', function() {
-        const textarea = document.querySelector('textarea[name="content"]');
-        if (textarea) {
-            textarea.addEventListener('input', function() {
-                document.getElementById('charCount').textContent = this.value.length;
-            });
+    // ── KEYBOARD SHORTCUTS (for fun) ──
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') switchTab(currentTab - 1);
+        if (e.key === 'ArrowRight') switchTab(currentTab + 1);
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            document.getElementById('selectBtn').click();
         }
+    });
+
+    // ── RANDOM QUOTE SPINNER ──
+    const quotes = [
+        "I want to be a person who gives good influence.",
+        "Life is like a camera – focus on what's important.",
+        "Let's just be happy.",
+        "Dreams do come true.",
+        "I love our CARATs.",
+        "Music is my language.",
+        "Stay true to yourself.",
+        "Every moment is a memory."
+    ];
+    document.getElementById('spinBtn').addEventListener('click', function() {
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        document.getElementById('randomQuote').textContent = '"' + quotes[randomIndex] + '"';
+        this.textContent = '⟳ AGAIN!';
+        showToast('✨ VERNON SAYS: ' + quotes[randomIndex]);
     });
 
     // ── CLIENT-SIDE PROFANITY FILTER ──
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('messageForm');
-        if (form) {
-            form.addEventListener('submit', function(e) {
-                const content = this.querySelector('textarea[name="content"]').value.toLowerCase();
-                const badWords = ['fuck', 'shit', 'ass', 'bitch', 'cunt', 'whore', 'slut', 'bastard', 'idiot', 'stupid', 'hate', 'kill', 'die', 'racist', 'nazi', 'hitler', 'suicide', 'selfharm'];
-                if (badWords.some(w => content.includes(w))) {
-                    e.preventDefault();
-                    showToast('Please remove inappropriate language.');
-                }
-            });
+    document.getElementById('msgForm').addEventListener('submit', function(e) {
+        const content = this.querySelector('textarea[name="content"]').value.toLowerCase();
+        const badWords = ['fuck', 'shit', 'ass', 'bitch', 'cunt', 'whore', 'slut', 'bastard', 'idiot', 'stupid', 'hate', 'kill', 'die', 'racist', 'nazi', 'hitler', 'suicide', 'selfharm'];
+        if (badWords.some(w => content.includes(w))) {
+            e.preventDefault();
+            showToast('Please remove inappropriate language.');
         }
     });
+
+    // ── TOAST FOR SERVER MESSAGES ──
+    @if (TempData["ShowMessages"] != null) {
+        <text>showToast('Message posted! ✦');</text>
+    }
+    @if (TempData["Error"] != null) {
+        <text>showToast('@TempData["Error"]');</text>
+    }
 </script>
+}
