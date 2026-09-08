@@ -6,239 +6,292 @@
     var assetBase = Configuration["AssetBaseUrl"]?.TrimEnd('/') ?? "";
 }
 
-<div class="row align-items-center" style="min-height:80vh;">
-    <div class="col-lg-6">
-        <h1 class="hero-title">HANSOL<br>VERNON<br>CHWE.</h1>
-        <p class="hero-subtitle">Artist. Rapper. Visual. / The complete archive.</p>
-
-        <div class="d-grid gap-3 mt-5">
-            <button class="feature-btn" data-bs-toggle="modal" data-bs-target="#factsModal">
-                <i class="bi bi-info-circle"></i> Profile & Facts
+<!-- ===== HERO SECTION ===== -->
+<div class="flex flex-col lg:flex-row items-center gap-12 py-8 lg:py-16">
+    <div class="flex-1 text-center lg:text-left">
+        <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black leading-[1.1] tracking-tight text-gray-900 dark:text-white">
+            HANSOL<br>VERNON<br>CHWE.
+        </h1>
+        <p class="text-lg sm:text-xl text-gray-600 dark:text-gray-300 mt-4 max-w-md mx-auto lg:mx-0">
+            Artist. Rapper. Visual. / The complete archive.
+        </p>
+        <div class="flex flex-col gap-4 mt-8 w-full">
+            <button class="btn-black w-full flex items-center justify-center gap-2" data-modal-toggle="factsModal">
+                <span>ℹ️</span> Profile & Facts
             </button>
-
-            <button class="feature-btn" data-bs-toggle="modal" data-bs-target="#discographyModal">
-                <i class="bi bi-disc"></i> Discography
+            <button class="btn-black w-full flex items-center justify-center gap-2" data-modal-toggle="discographyModal">
+                <span>💿</span> Discography
             </button>
-
-            <button class="feature-btn" data-bs-toggle="modal" data-bs-target="#messagesModal">
-                <i class="bi bi-chat-left-heart"></i> Fan Messages
+            <button class="btn-black w-full flex items-center justify-center gap-2" data-modal-toggle="messagesModal">
+                <span>💬</span> Fan Messages
             </button>
         </div>
     </div>
-    <div class="col-lg-6 d-none d-lg-block text-end">
-        <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/vernon/kpoppapi.jpg") : assetBase + "/images/vernon/kpoppapi.jpg")" class="img-fluid" style="filter: grayscale(100%); max-height:700px; object-fit: cover;" alt="Vernon">
+    <div class="flex-1 flex justify-center lg:justify-end">
+        <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/vernon/kpoppapi.jpg") : assetBase + "/images/vernon/kpoppapi.jpg")"
+             alt="Vernon"
+             class="w-full max-w-md lg:max-w-lg rounded-2xl grayscale hover:grayscale-0 transition duration-500 shadow-xl" />
     </div>
 </div>
 
-
-<div class="modal fade" id="factsModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="section-title mb-0">Profile & Facts</h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- ===== COUNTDOWN TIMER SECTION ===== -->
+<section class="py-12 border-t border-gray-200 dark:border-gray-700 mt-8">
+    <div class="text-center max-w-3xl mx-auto">
+        <h2 class="text-3xl sm:text-4xl font-black text-gray-900 dark:text-white mb-2">
+            ⏳ Next Birthday Countdown
+        </h2>
+        <p class="text-gray-500 dark:text-gray-400 mb-6">Counting down to Vernon's birthday – February 18, 2027</p>
+        <div id="countdown" class="flex flex-wrap justify-center gap-4 sm:gap-6">
+            <div class="text-center">
+                <div class="countdown-number" id="days">00</div>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Days</p>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-4 text-center mb-4 mb-md-0">
-                        <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/vernon/kpoppapi.jpg") : assetBase + "/images/vernon/kpoppapi.jpg")" class="img-fluid rounded-circle mb-3" style="width:150px; filter: grayscale(100%);" alt="Profile">
-                        <h4>Vernon</h4>
-                        <p class="text-muted">SEVENTEEN / Hip-Hop Team</p>
-                    </div>
-                    <div class="col-md-8">
-                        <ul class="list-unstyled">
-                            @foreach (var fact in Model.FunFacts)
-                            {
-                                <li class="fact-item"><i class="bi bi-dot"></i> @fact</li>
-                            }
-                        </ul>
-                    </div>
-                </div>
+            <div class="text-center">
+                <div class="countdown-number" id="hours">00</div>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Hours</p>
+            </div>
+            <div class="text-center">
+                <div class="countdown-number" id="minutes">00</div>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Minutes</p>
+            </div>
+            <div class="text-center">
+                <div class="countdown-number" id="seconds">00</div>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Seconds</p>
             </div>
         </div>
+        <p class="text-sm text-gray-400 dark:text-gray-500 mt-6 italic">"Time flies when you're having fun!"</p>
     </div>
-</div>
+</section>
 
-<div class="modal fade" id="galleryModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content bg-white border-0">
-
-            <div class="modal-header border-0 justify-content-center position-relative py-4">
-                <h2 class="section-title mb-0 fw-black text-center" style="letter-spacing: -1px; font-size:2.5rem;">
-                    ✨ THE "HAPPY VIBES" COLLECTION ✨
-                </h2>
-                <button type="button" class="btn-close position-absolute top-50 end-0 translate-middle-y me-4" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- ===== YOUTUBE EMBED SECTION ===== -->
+<section class="py-12 border-t border-gray-200 dark:border-gray-700">
+    <div class="max-w-5xl mx-auto">
+        <h2 class="text-3xl sm:text-4xl font-black text-gray-900 dark:text-white text-center mb-2">
+            🎬 Vernon's Best Moments
+        </h2>
+        <p class="text-gray-500 dark:text-gray-400 text-center mb-8">Watch some of his most iconic performances</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Video 1: Super -->
+            <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
+                <iframe class="w-full h-full" src="https://www.youtube.com/embed/Yg2gp7RMTdQ" title="SEVENTEEN Super" allowfullscreen loading="lazy"></iframe>
             </div>
-
-            <div class="modal-body pt-0 px-4 px-md-5" style="max-height:75vh; overflow-y: auto;">
-
-                <p class="text-center text-muted fs-5 mb-5" style="max-width:600px; margin-inline: auto;">
-                    A curated selection of Vernon's best moments in full, vibrant color. Instant serotonin boost guaranteed! ☀️
-                </p>
-
-                <div class="gallery-grid surprise-gallery pb-4">
-                    @for (int i =1; i <=15; i++)
-                    {
-                        <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content($"~/images/vernon/vernon{ i }.jpg") : assetBase + $"/images/vernon/vernon{ i }.jpg")" class="gallery-img" alt="Vernon Photo @i" onerror="this.style.display='none'">
-                    }
-                </div>
+            <!-- Video 2: Left & Right -->
+            <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
+                <iframe class="w-full h-full" src="https://www.youtube.com/embed/Pu1aQvm5MrU" title="SEVENTEEN Left & Right" allowfullscreen loading="lazy"></iframe>
+            </div>
+            <!-- Video 3: Hot -->
+            <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
+                <iframe class="w-full h-full" src="https://www.youtube.com/embed/gRnuFC4Ualw" title="SEVENTEEN Hot" allowfullscreen loading="lazy"></iframe>
+            </div>
+            <!-- Video 4: Vernon's solo / rap -->
+            <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
+                <iframe class="w-full h-full" src="https://www.youtube.com/embed/lXGcT8M5KbI" title="Vernon & Mingyu - I Can't Run Away" allowfullscreen loading="lazy"></iframe>
             </div>
         </div>
+        <p class="text-sm text-gray-400 dark:text-gray-500 text-center mt-4">💡 More videos added regularly – check back!</p>
     </div>
-</div>
+</section>
 
-<div class="modal fade" id="messagesModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header border-0 pb-0">
-                <ul class="nav nav-tabs w-100 border-bottom-0" id="messageTabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active fw-bold text-dark border-0 border-bottom border-dark border-2" id="read-tab" data-bs-toggle="tab" data-bs-target="#read-pane" type="button" role="tab">READ MESSAGES</button>
+<!-- ========================================================== -->
+<!-- ===== MODALS (hidden, cloned into modal container) ===== -->
+<!-- ========================================================== -->
+
+<!-- Facts Modal -->
+<div id="factsModal" style="display:none;">
+    <div class="flex flex-col sm:flex-row items-start gap-6">
+        <div class="flex-shrink-0 text-center sm:text-left">
+            <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/vernon/kpoppapi.jpg") : assetBase + "/images/vernon/kpoppapi.jpg")"
+                 class="w-32 h-32 rounded-full object-cover grayscale mx-auto sm:mx-0" alt="Profile" />
+            <h4 class="font-bold text-xl mt-2 dark:text-white">Vernon</h4>
+            <p class="text-gray-500 dark:text-gray-400 text-sm">SEVENTEEN / Hip-Hop Team</p>
+        </div>
+        <div class="flex-1 w-full">
+            <h2 class="section-title dark:text-white mb-4">Profile & Facts</h2>
+            <ul class="divide-y divide-gray-100 dark:divide-gray-700">
+                @foreach (var fact in Model.FunFacts)
+                {
+                    <li class="fact-item flex items-start gap-2 dark:text-gray-300">
+                        <span class="text-indigo-500 dark:text-indigo-400 mt-1">•</span>
+                        <span>@fact</span>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link fw-bold text-dark border-0" id="post-tab" data-bs-toggle="tab" data-bs-target="#post-pane" type="button" role="tab">POST A MESSAGE</button>
-                    </li>
-                </ul>
-                <button type="button" class="btn-close align-self-start mt-2" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="tab-content" id="messageTabsContent">
-                    <div class="tab-pane fade show active" id="read-pane" role="tabpanel" style="max-height:50vh; overflow-y: auto;">
-                        @if (Model.Messages.Any())
-                        {
-                            foreach (var msg in Model.Messages)
-                            {
-                                <div class="message-card">
-                                    <p class="mb-0 fs-5">"@msg.MessageContent"</p>
-                                    <span class="message-sender">— @msg.SenderName</span>
-                                </div>
-                            }
-                        }
-                        else
-                        {
-                            <p class="text-muted text-center py-4">No messages yet. Be the first!</p>
-                        }
-                    </div>
-                    <div class="tab-pane fade" id="post-pane" role="tabpanel">
-                        <form action="/Home/PostMessage" method="post" class="mt-3">
-                            <div class="mb-4">
-                                <label class="form-label fw-bold">YOUR NAME</label>
-                                <input type="text" name="sender" class="form-control clean-input" required />
-                            </div>
-                            <div class="mb-4">
-                                <label class="form-label fw-bold">YOUR MESSAGE</label>
-                                <textarea name="content" class="form-control clean-input" rows="4" required></textarea>
-                            </div>
-                            <button type="submit" class="btn-black w-100">SEND MESSAGE</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+                }
+            </ul>
         </div>
+    </div>
+    <div class="mt-6 text-right">
+        <button class="modal-close-btn text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 text-sm font-medium">Close</button>
     </div>
 </div>
 
-<div class="modal fade" id="discographyModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="section-title mb-0">Discography</h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" style="max-height:70vh; overflow-y: auto;">
-
-                <h4 class="mt-4 mb-3 fw-bold border-bottom pb-2">2024</h4>
-                <div class="row g-4">
-                    <div class="col-md-4">
-                        <div class="card border-0">
-                            <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/17isrighthere.jpg") : assetBase + "/images/albums/17isrighthere.jpg")" class="card-img-top grayscale-hover" alt="17 Is Right Here" onerror="this.src='https://placehold.co/300x300?text=17+Is+Right+Here'">
-                            <div class="card-body px-0">
-                                <h5 class="fw-bold mb-0">17 Is Right Here</h5>
-                                <p class="text-muted small">Best Album</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card border-0">
-                            <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/spillthefeels.jpg") : assetBase + "/images/albums/spillthefeels.jpg")" class="card-img-top grayscale-hover" alt="Spill The Feels" onerror="this.src='https://placehold.co/300x300?text=Spill+The+Feels'">
-                            <div class="card-body px-0">
-                                <h5 class="fw-bold mb-0">Spill The Feels</h5>
-                                <p class="text-muted small">12th Mini Album</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card border-0">
-                            <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/shohikigen.jpg") : assetBase + "/images/albums/shohikigen.jpg")" class="card-img-top grayscale-hover" alt="Shohikigen" onerror="this.src='https://placehold.co/300x300?text=Shohikigen'">
-                            <div class="card-body px-0">
-                                <h5 class="fw-bold mb-0">Shohikigen</h5>
-                                <p class="text-muted small">JP Single</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <h4 class="mt-5 mb-3 fw-bold border-bottom pb-2">2023</h4>
-                <div class="row g-4">
-                    <div class="col-md-4">
-                        <div class="card border-0">
-                            <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/fml.jpg") : assetBase + "/images/albums/fml.jpg")" class="card-img-top grayscale-hover" alt="FML" onerror="this.src='https://placehold.co/300x300?text=FML'">
-                            <div class="card-body px-0">
-                                <h5 class="fw-bold mb-0">FML</h5>
-                                <p class="text-muted small">10th Mini Album</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card border-0">
-                            <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/seventeenthheaven.jpg") : assetBase + "/images/albums/seventeenthheaven.jpg")" class="card-img-top grayscale-hover" alt="Seventeenth Heaven" onerror="this.src='https://placehold.co/300x300?text=Seventeenth+Heaven'">
-                            <div class="card-body px-0">
-                                <h5 class="fw-bold mb-0">Seventeenth Heaven</h5>
-                                <p class="text-muted small">11th Mini Album</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <h4 class="mt-5 mb-3 fw-bold border-bottom pb-2">2015 (Debut)</h4>
-                <div class="row g-4">
-                    <div class="col-md-4">
-                        <div class="card border-0">
-                            <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/17carat.jpg") : assetBase + "/images/albums/17carat.jpg")" class="card-img-top grayscale-hover" alt="17 Carat" onerror="this.src='https://placehold.co/300x300?text=17+Carat'">
-                            <div class="card-body px-0">
-                                <h5 class="fw-bold mb-0">17 Carat</h5>
-                                <p class="text-muted small">1st Mini Album</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+<!-- Gallery Modal -->
+<div id="galleryModal" style="display:none;">
+    <div class="text-center mb-6">
+        <h2 class="section-title dark:text-white">✨ THE "HAPPY VIBES" COLLECTION ✨</h2>
+        <p class="text-gray-500 dark:text-gray-400 max-w-md mx-auto mt-2">A curated selection of Vernon's best moments in full, vibrant color.</p>
+    </div>
+    <div class="gallery-grid">
+        @for (int i = 1; i <= 15; i++)
+        {
+            <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content($"~/images/vernon/vernon{i}.jpg") : assetBase + $"/images/vernon/vernon{i}.jpg")"
+                 class="gallery-img"
+                 alt="Vernon Photo @i"
+                 onerror="this.style.display='none'" />
+        }
+    </div>
+    <div class="mt-6 text-right">
+        <button class="modal-close-btn text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 text-sm font-medium">Close</button>
     </div>
 </div>
 
-<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:2000; margin-bottom:80px;">
-    <div id="successToast" class="toast align-items-center text-white bg-black border-0" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body fw-bold">
-                <i class="bi bi-check-circle-fill me-2 text-success"></i> Message successfully added to the archive!
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+<!-- Messages Modal -->
+<div id="messagesModal" style="display:none;">
+    <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+        <h2 class="section-title dark:text-white">Fan Messages</h2>
+        <div class="flex gap-2 text-sm font-medium">
+            <button class="tab-btn active-tab" data-tab="read-tab">Read</button>
+            <button class="tab-btn" data-tab="post-tab">Post</button>
         </div>
+    </div>
+    <div id="read-tab" class="tab-pane active">
+        <div style="max-height:50vh; overflow-y:auto;">
+            @if (Model.Messages.Any())
+            {
+                foreach (var msg in Model.Messages)
+                {
+                    <div class="message-card dark:bg-gray-700 dark:border-indigo-400">
+                        <p class="text-lg dark:text-white">"@msg.MessageContent"</p>
+                        <span class="message-sender dark:text-gray-300">— @msg.SenderName</span>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-center text-gray-400 dark:text-gray-500 py-8">No messages yet. Be the first!</p>
+            }
+        </div>
+    </div>
+    <div id="post-tab" class="tab-pane" style="display:none;">
+        <form action="/Home/PostMessage" method="post" class="mt-4">
+            <div class="mb-4">
+                <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">Your Name</label>
+                <input type="text" name="sender" class="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-white dark:bg-gray-800 text-gray-900 dark:text-white" required />
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">Your Message</label>
+                <textarea name="content" rows="4" class="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-white dark:bg-gray-800 text-gray-900 dark:text-white" required></textarea>
+            </div>
+            <button type="submit" class="btn-black w-full">Send Message</button>
+        </form>
+    </div>
+    <div class="mt-4 text-right">
+        <button class="modal-close-btn text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 text-sm font-medium">Close</button>
     </div>
 </div>
 
-@if (TempData["ShowMessages"] != null)
-{
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Trigger the success toast
-            var toastElList = [].slice.call(document.querySelectorAll('.toast'))
-            var toastList = toastElList.map(function (toastEl) {
-              return new bootstrap.Toast(toastEl, { delay:4000 }); // disappears after4 seconds
+<!-- Discography Modal -->
+<div id="discographyModal" style="display:none;">
+    <h2 class="section-title dark:text-white mb-6">Discography</h2>
+    <div style="max-height:60vh; overflow-y:auto;">
+
+        <h4 class="font-bold text-xl border-b border-gray-200 dark:border-gray-700 pb-2 mb-4 dark:text-white">2024</h4>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-6 mb-8">
+            <div>
+                <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/17isrighthere.jpg") : assetBase + "/images/albums/17isrighthere.jpg")"
+                     class="w-full rounded-xl shadow-sm hover:shadow-md transition" alt="17 Is Right Here" onerror="this.src='https://placehold.co/300x300?text=17+Is+Right+Here'" />
+                <p class="font-bold mt-2 dark:text-white">17 Is Right Here</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Best Album</p>
+            </div>
+            <div>
+                <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/spillthefeels.jpg") : assetBase + "/images/albums/spillthefeels.jpg")"
+                     class="w-full rounded-xl shadow-sm hover:shadow-md transition" alt="Spill The Feels" onerror="this.src='https://placehold.co/300x300?text=Spill+The+Feels'" />
+                <p class="font-bold mt-2 dark:text-white">Spill The Feels</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">12th Mini Album</p>
+            </div>
+            <div>
+                <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/shohikigen.jpg") : assetBase + "/images/albums/shohikigen.jpg")"
+                     class="w-full rounded-xl shadow-sm hover:shadow-md transition" alt="Shohikigen" onerror="this.src='https://placehold.co/300x300?text=Shohikigen'" />
+                <p class="font-bold mt-2 dark:text-white">Shohikigen</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">JP Single</p>
+            </div>
+        </div>
+
+        <h4 class="font-bold text-xl border-b border-gray-200 dark:border-gray-700 pb-2 mb-4 dark:text-white">2023</h4>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-6 mb-8">
+            <div>
+                <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/fml.jpg") : assetBase + "/images/albums/fml.jpg")"
+                     class="w-full rounded-xl shadow-sm hover:shadow-md transition" alt="FML" onerror="this.src='https://placehold.co/300x300?text=FML'" />
+                <p class="font-bold mt-2 dark:text-white">FML</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">10th Mini Album</p>
+            </div>
+            <div>
+                <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/seventeenthheaven.jpg") : assetBase + "/images/albums/seventeenthheaven.jpg")"
+                     class="w-full rounded-xl shadow-sm hover:shadow-md transition" alt="Seventeenth Heaven" onerror="this.src='https://placehold.co/300x300?text=Seventeenth+Heaven'" />
+                <p class="font-bold mt-2 dark:text-white">Seventeenth Heaven</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">11th Mini Album</p>
+            </div>
+        </div>
+
+        <h4 class="font-bold text-xl border-b border-gray-200 dark:border-gray-700 pb-2 mb-4 dark:text-white">2015 (Debut)</h4>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-6">
+            <div>
+                <img src="@(string.IsNullOrEmpty(assetBase) ? Url.Content("~/images/albums/17carat.jpg") : assetBase + "/images/albums/17carat.jpg")"
+                     class="w-full rounded-xl shadow-sm hover:shadow-md transition" alt="17 Carat" onerror="this.src='https://placehold.co/300x300?text=17+Carat'" />
+                <p class="font-bold mt-2 dark:text-white">17 Carat</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">1st Mini Album</p>
+            </div>
+        </div>
+    </div>
+    <div class="mt-6 text-right">
+        <button class="modal-close-btn text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 text-sm font-medium">Close</button>
+    </div>
+</div>
+
+<!-- ===== COUNTDOWN TIMER JAVASCRIPT ===== -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set target date: February 18, 2027 (Vernon's birthday)
+        const targetDate = new Date('February 18, 2027 00:00:00').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                document.getElementById('days').textContent = '🎉';
+                document.getElementById('hours').textContent = '🎉';
+                document.getElementById('minutes').textContent = '🎉';
+                document.getElementById('seconds').textContent = '🎉';
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    });
+
+    // Tab switching inside modals (preserved from previous)
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tabId = this.dataset.tab;
+                const parent = this.closest('.modal-content');
+                if (!parent) return;
+                parent.querySelectorAll('.tab-pane').forEach(pane => pane.style.display = 'none');
+                parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-tab'));
+                const target = document.getElementById(tabId);
+                if (target) target.style.display = 'block';
+                this.classList.add('active-tab');
             });
-            toastList.forEach(toast => toast.show());
         });
-    </script>
-}
+    });
+</script>

@@ -3,76 +3,431 @@
     private string AssetBase() => Configuration["AssetBaseUrl"]?.TrimEnd('/') ?? "";
 }
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="@(string.IsNullOrEmpty(AssetBase()) ? Url.Content("~/css/site.css") : AssetBase() + "/css/site.css")" />
+
+    <!-- Tailwind CSS with Dark Mode support -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700;14..32,900&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base */
+        body {
+            font-family: 'Inter', sans-serif;
+            padding-bottom: 100px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        /* Dark mode overrides */
+        html.dark body {
+            background-color: #111827;
+            color: #f9fafb;
+        }
+        html.dark .bg-white { background-color: #1f2937; }
+        html.dark .bg-gray-50 { background-color: #111827; }
+        html.dark .text-gray-900 { color: #f9fafb; }
+        html.dark .text-gray-600 { color: #9ca3af; }
+        html.dark .text-gray-700 { color: #d1d5db; }
+        html.dark .text-gray-500 { color: #9ca3af; }
+        html.dark .border-gray-200 { border-color: #374151; }
+        html.dark .border-dark { border-color: #374151; }
+        html.dark .bg-white\/80 { background-color: rgba(31, 41, 55, 0.8); }
+        html.dark .bg-black { background-color: #1f2937; }
+        html.dark .message-card { background: #374151; }
+        html.dark .fact-item { border-color: #374151; }
+        html.dark .btn-black { background: #374151; color: #f9fafb; }
+        html.dark .btn-black:hover { background: #4b5563; }
+        html.dark .music-player { background: #1f2937; border-color: #374151; }
+        html.dark .player-controls button { color: #f9fafb; }
+        html.dark .modal-content { background: #1f2937; color: #f9fafb; }
+        html.dark .tab-btn { background: #374151; color: #f9fafb; }
+        html.dark .tab-btn.active-tab { background: #4f46e5; color: white; }
+        html.dark .toast { background: #374151; color: #f9fafb; }
+
+        /* Music player */
+        .music-player {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            z-index: 1000;
+            box-shadow: 0 -4px 6px -1px rgba(0,0,0,0.05);
+            transition: background 0.3s, border-color 0.3s;
+        }
+        .track-info {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            flex: 1 1 180px;
+        }
+        .track-info .title { font-weight: 600; font-size: 1rem; }
+        .track-info .artist { color: #6b7280; font-size: 0.875rem; }
+        html.dark .track-info .artist { color: #9ca3af; }
+        .player-controls { display: flex; align-items: center; gap: 0.5rem; }
+        .player-controls button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #1f2937;
+            cursor: pointer;
+            transition: color 0.2s;
+            padding: 0 0.25rem;
+        }
+        .player-controls button:hover { color: #4f46e5; }
+        .player-controls .play-btn { font-size: 2rem; }
+        .record-icon {
+            display: inline-block;
+            animation: spin 2s linear infinite;
+            animation-play-state: paused;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 0.75rem;
+        }
+        .gallery-img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border-radius: 0.75rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .gallery-img:hover { transform: scale(1.02); box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 1rem;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-content {
+            background: white;
+            border-radius: 1.5rem;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transition: background 0.3s, color 0.3s;
+        }
+        @media (max-width: 640px) {
+            .modal-overlay { align-items: flex-end; }
+            .modal-content {
+                border-radius: 1.5rem 1.5rem 0 0;
+                max-height: 85vh;
+                padding: 1.25rem;
+            }
+            body { padding-bottom: 120px; }
+            .music-player { flex-direction: column; align-items: stretch; padding: 0.5rem 1rem; }
+            .track-info { justify-content: center; }
+            .player-controls { justify-content: center; }
+        }
+
+        /* Message cards */
+        .message-card {
+            background: #f9fafb;
+            padding: 1.25rem;
+            border-radius: 1rem;
+            margin-bottom: 0.75rem;
+            border-left: 4px solid #4f46e5;
+        }
+        .message-sender {
+            display: block;
+            margin-top: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+        html.dark .message-sender { color: #d1d5db; }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            bottom: 90px;
+            right: 1.5rem;
+            z-index: 3000;
+        }
+        .toast {
+            background: #1f2937;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .toast.show { display: flex; }
+        .toast .close-btn {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            font-size: 1.25rem;
+            cursor: pointer;
+            margin-left: 1rem;
+        }
+        .toast .close-btn:hover { color: white; }
+
+        /* Utility */
+        .btn-black {
+            background: #111;
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            transition: background 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-black:hover { background: #333; }
+        .section-title {
+            font-size: 1.875rem;
+            font-weight: 900;
+            letter-spacing: -0.025em;
+        }
+        .fact-item { padding: 0.5rem 0; border-bottom: 1px solid #f3f4f6; }
+        .fact-item:last-child { border-bottom: none; }
+        .tab-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            background: #f3f4f6;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .tab-btn.active-tab { background: #1f2937; color: white; }
+        .tab-btn:hover { opacity: 0.8; }
+
+        /* Countdown number styling */
+        .countdown-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: #4f46e5;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 1rem;
+            min-width: 4rem;
+            display: inline-block;
+        }
+        @media (min-width: 640px) {
+            .countdown-number { font-size: 3.5rem; padding: 0.75rem 1.5rem; min-width: 5.5rem; }
+        }
+        /* Back to top button */
+        #backToTop {
+            position: fixed;
+            bottom: 100px;
+            right: 1.5rem;
+            z-index: 999;
+            background: #4f46e5;
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 9999px;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+        }
+        #backToTop.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        #backToTop:hover { background: #4338ca; transform: scale(1.05); }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-light bg-white py-3 border-bottom border-dark sticky-top">
-        <div class="container">
-            <a class="navbar-brand fw-bold fs-4 ls-1" href="/">VERNON. ARCHIVE</a>
 
-            <div class="d-flex align-items-center gap-3">
-                <button class="btn border-0 p-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#galleryModal" title="Surprise!">
-                    <img src='@(string.IsNullOrEmpty(AssetBase()) ? Url.Content("~/images/vernon/nonver.jpg") : AssetBase() + "/images/vernon/nonver.jpg")' alt="Surprise" class="nav-cat-icon bouncing-icon">
-                </button>
-
+    <!-- ===== NAVBAR ===== -->
+    <nav class="bg-white/80 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-200/60 dark:bg-gray-800/80 dark:border-gray-700/60 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="/" class="text-2xl font-black tracking-tight text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+                    VERNON. ARCHIVE
+                </a>
+                <div class="flex items-center gap-3">
+                    <!-- Dark Mode Toggle -->
+                    <button id="darkModeToggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition" aria-label="Toggle dark mode">
+                        <span id="darkModeIcon" class="text-2xl">🌙</span>
+                    </button>
+                    <!-- Surprise Button -->
+                    <button class="relative group" data-modal-toggle="galleryModal" title="Surprise!">
+                        <img src='@(string.IsNullOrEmpty(AssetBase()) ? Url.Content("~/images/vernon/nonver.jpg") : AssetBase() + "/images/vernon/nonver.jpg")'
+                             alt="Surprise"
+                             class="w-10 h-10 rounded-full object-cover border-2 border-gray-200 dark:border-gray-600 group-hover:border-indigo-400 transition" />
+                        <span class="absolute -top-1 -right-1 w-3 h-3 bg-indigo-500 rounded-full animate-pulse"></span>
+                    </button>
+                </div>
             </div>
         </div>
     </nav>
 
-    <main class="container">
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         @RenderBody()
     </main>
 
+    <!-- ===== MUSIC PLAYER ===== -->
     <div class="music-player">
-        <i class="bi bi-vinyl-fill fs-4 me-2" id="recordIcon" style="animation: spin 2s linear infinite; animation-play-state: paused;"></i>
         <div class="track-info">
-            <span id="trackTitle">Black Eye</span>
-            <span id="trackArtist" class="artist-name">/ Vernon</span>
+            <i class="record-icon text-2xl text-indigo-600" id="recordIcon">💿</i>
+            <span class="title dark:text-white" id="trackTitle">Black Eye</span>
+            <span class="artist" id="trackArtist">/ Vernon</span>
         </div>
         <div class="player-controls">
-            <button onclick="prevTrack()"><i class="bi bi-skip-backward-fill"></i></button>
-            <button onclick="togglePlay()" id="playBtn"><i class="bi bi-play-fill"></i></button>
-            <button onclick="nextTrack()"><i class="bi bi-skip-forward-fill"></i></button>
+            <button onclick="prevTrack()" aria-label="Previous">⏮</button>
+            <button onclick="togglePlay()" id="playBtn" class="play-btn" aria-label="Play/Pause">▶</button>
+            <button onclick="nextTrack()" aria-label="Next">⏭</button>
         </div>
         <audio id="audioPlayer"></audio>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- ===== BACK TO TOP BUTTON ===== -->
+    <button id="backToTop" aria-label="Back to top">↑</button>
+
+    <!-- ===== TOAST CONTAINER ===== -->
+    <div class="toast-container" id="toastContainer">
+        <div class="toast" id="successToast">
+            <span>✅</span>
+            <span class="font-medium" id="toastMessage">Message added!</span>
+            <button class="close-btn" onclick="hideToast()">✕</button>
+        </div>
+    </div>
+
+    <!-- ===== MODAL CONTAINER ===== -->
+    <div id="modalContainer"></div>
+
+    <!-- ===== SCRIPTS ===== -->
     <script>
-        // --- MUSIC PLAYER LOGIC ---
+        // ============================================
+        // 1. DARK MODE TOGGLE
+        // ============================================
+        (function() {
+            const html = document.documentElement;
+            const toggleBtn = document.getElementById('darkModeToggle');
+            const icon = document.getElementById('darkModeIcon');
+
+            // Check stored preference
+            const stored = localStorage.getItem('theme');
+            if (stored === 'dark') {
+                html.classList.remove('light');
+                html.classList.add('dark');
+                icon.textContent = '☀️';
+            } else if (stored === 'light') {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                icon.textContent = '🌙';
+            } else {
+                // System preference fallback
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    html.classList.remove('light');
+                    html.classList.add('dark');
+                    icon.textContent = '☀️';
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    html.classList.remove('dark');
+                    html.classList.add('light');
+                    icon.textContent = '🌙';
+                    localStorage.setItem('theme', 'light');
+                }
+            }
+
+            toggleBtn.addEventListener('click', function() {
+                if (html.classList.contains('dark')) {
+                    html.classList.remove('dark');
+                    html.classList.add('light');
+                    icon.textContent = '🌙';
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    html.classList.remove('light');
+                    html.classList.add('dark');
+                    icon.textContent = '☀️';
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+        })();
+
+        // ============================================
+        // 2. BACK TO TOP BUTTON (scroll visibility)
+        // ============================================
+        const backToTopBtn = document.getElementById('backToTop');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+        backToTopBtn.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ============================================
+        // 3. MUSIC PLAYER LOGIC
+        // ============================================
         const playlist = [
             { title: "Black Eye", artist: "/ Vernon", src: '@(string.IsNullOrEmpty(AssetBase()) ? Url.Content("~/audio/blackeye.mp3") : AssetBase() + "/audio/blackeye.mp3")' },
             { title: "Shining Star", artist: "/ Vernon", src: '@(string.IsNullOrEmpty(AssetBase()) ? Url.Content("~/audio/shiningstar.mp3") : AssetBase() + "/audio/shiningstar.mp3")' }
         ];
         let currentTrackIndex = 0;
-        const audio = document.getElementById("audioPlayer");
-        const playBtn = document.getElementById("playBtn");
-        const trackTitle = document.getElementById("trackTitle");
-        const recordIcon = document.getElementById("recordIcon");
-
-        loadTrack(currentTrackIndex);
+        const audio = document.getElementById('audioPlayer');
+        const playBtn = document.getElementById('playBtn');
+        const trackTitle = document.getElementById('trackTitle');
+        const trackArtist = document.getElementById('trackArtist');
+        const recordIcon = document.getElementById('recordIcon');
 
         function loadTrack(index) {
-            audio.src = playlist[index].src;
-            trackTitle.textContent = playlist[index].title;
+            const track = playlist[index];
+            audio.src = track.src;
+            trackTitle.textContent = track.title;
+            trackArtist.textContent = track.artist;
         }
 
         function togglePlay() {
             if (audio.paused) {
                 audio.play();
-                playBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
-                recordIcon.style.animationPlayState = "running"; // STARTS SPINNING
+                playBtn.textContent = '⏸';
+                recordIcon.style.animationPlayState = 'running';
             } else {
                 audio.pause();
-                playBtn.innerHTML = '<i class="bi bi-play-fill"></i>';
-                recordIcon.style.animationPlayState = "paused"; // STOPS SPINNING
+                playBtn.textContent = '▶';
+                recordIcon.style.animationPlayState = 'paused';
             }
         }
 
@@ -80,17 +435,89 @@
             currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
             loadTrack(currentTrackIndex);
             audio.play();
-            recordIcon.style.animationPlayState = "running";
-            playBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
+            playBtn.textContent = '⏸';
+            recordIcon.style.animationPlayState = 'running';
         }
 
         function prevTrack() {
             currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
             loadTrack(currentTrackIndex);
             audio.play();
-            recordIcon.style.animationPlayState = "running";
-            playBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
+            playBtn.textContent = '⏸';
+            recordIcon.style.animationPlayState = 'running';
+        }
+        loadTrack(0);
+
+        // ============================================
+        // 4. TOAST NOTIFICATION
+        // ============================================
+        function showToast(message) {
+            const toast = document.getElementById('successToast');
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+
+        function hideToast() {
+            document.getElementById('successToast').classList.remove('show');
+        }
+
+        // ============================================
+        // 5. MODAL SYSTEM (no Bootstrap dependency)
+        // ============================================
+        document.addEventListener('click', function(e) {
+            const trigger = e.target.closest('[data-modal-toggle]');
+            if (!trigger) return;
+            const modalId = trigger.dataset.modalToggle;
+            openModal(modalId);
+        });
+
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.modal-overlay') && !e.target.closest('.modal-content')) {
+                closeAllModals();
+            }
+            if (e.target.closest('.modal-close-btn')) {
+                closeAllModals();
+            }
+        });
+
+        function openModal(id) {
+            const container = document.getElementById('modalContainer');
+            const source = document.getElementById(id);
+            if (!source) return;
+            const clone = source.cloneNode(true);
+            clone.style.display = 'block';
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay active';
+            overlay.id = 'activeModal';
+            const contentWrapper = document.createElement('div');
+            contentWrapper.className = 'modal-content';
+            while (clone.firstChild) {
+                contentWrapper.appendChild(clone.firstChild);
+            }
+            overlay.appendChild(contentWrapper);
+            container.innerHTML = '';
+            container.appendChild(overlay);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAllModals() {
+            const container = document.getElementById('modalContainer');
+            container.innerHTML = '';
+            document.body.style.overflow = '';
+        }
+
+        // Show toast if TempData flag is set
+        @if (TempData["ShowMessages"] != null)
+        {
+            <text>
+                document.addEventListener('DOMContentLoaded', function() {
+                    showToast('Message successfully added to the archive!');
+                });
+            </text>
         }
     </script>
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
