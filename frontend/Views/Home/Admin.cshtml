@@ -1,0 +1,33 @@
+﻿@model List<VernonFanSite.Models.FanMessage>
+@{
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+    <h2 class="text-danger">🛡️ ADMIN DASHBOARD</h2>
+    <table class="table table-dark table-striped">
+        <thead>
+            <tr>
+                <th>Sender</th>
+                <th>Message</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var msg in Model)
+            {
+                <tr>
+                    <td>@msg.SenderName</td>
+                    <td>@msg.MessageContent</td>
+                    <td>
+                        <form asp-action="DeleteMessage" method="post">
+                            <input type="hidden" name="id" value="@msg.Id" />
+                            <button class="btn btn-sm btn-danger">DELETE</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a asp-action="Index" class="btn btn-outline-light">Back to Website</a>
+</div>

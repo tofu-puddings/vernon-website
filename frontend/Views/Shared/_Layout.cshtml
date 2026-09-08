@@ -1,0 +1,96 @@
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@functions {
+    private string AssetBase() => Configuration["AssetBaseUrl"]?.TrimEnd('/') ?? "";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="@(string.IsNullOrEmpty(AssetBase()) ? Url.Content("~/css/site.css") : AssetBase() + "/css/site.css")" />
+</head>
+<body>
+    <nav class="navbar navbar-light bg-white py-3 border-bottom border-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-4 ls-1" href="/">VERNON. ARCHIVE</a>
+
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn border-0 p-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#galleryModal" title="Surprise!">
+                    <img src='@(string.IsNullOrEmpty(AssetBase()) ? Url.Content("~/images/vernon/nonver.jpg") : AssetBase() + "/images/vernon/nonver.jpg")' alt="Surprise" class="nav-cat-icon bouncing-icon">
+                </button>
+
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        @RenderBody()
+    </main>
+
+    <div class="music-player">
+        <i class="bi bi-vinyl-fill fs-4 me-2" id="recordIcon" style="animation: spin 2s linear infinite; animation-play-state: paused;"></i>
+        <div class="track-info">
+            <span id="trackTitle">Black Eye</span>
+            <span id="trackArtist" class="artist-name">/ Vernon</span>
+        </div>
+        <div class="player-controls">
+            <button onclick="prevTrack()"><i class="bi bi-skip-backward-fill"></i></button>
+            <button onclick="togglePlay()" id="playBtn"><i class="bi bi-play-fill"></i></button>
+            <button onclick="nextTrack()"><i class="bi bi-skip-forward-fill"></i></button>
+        </div>
+        <audio id="audioPlayer"></audio>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // --- MUSIC PLAYER LOGIC ---
+        const playlist = [
+            { title: "Black Eye", artist: "/ Vernon", src: '@(string.IsNullOrEmpty(AssetBase()) ? Url.Content("~/audio/blackeye.mp3") : AssetBase() + "/audio/blackeye.mp3")' },
+            { title: "Shining Star", artist: "/ Vernon", src: '@(string.IsNullOrEmpty(AssetBase()) ? Url.Content("~/audio/shiningstar.mp3") : AssetBase() + "/audio/shiningstar.mp3")' }
+        ];
+        let currentTrackIndex = 0;
+        const audio = document.getElementById("audioPlayer");
+        const playBtn = document.getElementById("playBtn");
+        const trackTitle = document.getElementById("trackTitle");
+        const recordIcon = document.getElementById("recordIcon");
+
+        loadTrack(currentTrackIndex);
+
+        function loadTrack(index) {
+            audio.src = playlist[index].src;
+            trackTitle.textContent = playlist[index].title;
+        }
+
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                playBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
+                recordIcon.style.animationPlayState = "running"; // STARTS SPINNING
+            } else {
+                audio.pause();
+                playBtn.innerHTML = '<i class="bi bi-play-fill"></i>';
+                recordIcon.style.animationPlayState = "paused"; // STOPS SPINNING
+            }
+        }
+
+        function nextTrack() {
+            currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+            loadTrack(currentTrackIndex);
+            audio.play();
+            recordIcon.style.animationPlayState = "running";
+            playBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
+        }
+
+        function prevTrack() {
+            currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+            loadTrack(currentTrackIndex);
+            audio.play();
+            recordIcon.style.animationPlayState = "running";
+            playBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
+        }
+    </script>
+</body>
+</html>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 node_modules/
 .env
 *.log
@@ -13,3 +14,20 @@ build/
 bin/
 obj/
 *.vs/**
+=======
+node_modules/
+.env
+*.log
+*.db
+.DS_Store
+.vscode/
+package-lock.json
+npm-debug.log
+dist/
+build/
+/*.user
+/*.suo
+bin/
+obj/
+*.vs/**
+>>>>>>> 323ac6ab568cb0b4bb295785b3c2de0ae3f426c4

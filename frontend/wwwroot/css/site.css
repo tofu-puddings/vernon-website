@@ -1,0 +1,315 @@
+/* --- GLOBAL MINIMALISM --- */
+body {
+    background-color: #ffffff;
+    color: #000000;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    overflow-x: hidden;
+    letter-spacing: -0.02em;
+    padding-bottom: 100px;
+}
+
+a {
+    color: #000;
+    text-decoration: none;
+}
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+/* --- TYPOGRAPHY --- */
+.hero-title {
+    font-size: 6rem;
+    font-weight: 900;
+    line-height: 0.9;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: #555;
+    margin-bottom: 3rem;
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #000;
+    padding-bottom: 0.5rem;
+}
+
+/* --- HOMEPAGE FEATURE BUTTONS --- */
+.feature-btn {
+    display: block;
+    width: 100%;
+    padding: 2rem;
+    background: #fff;
+    border: 2px solid #000;
+    color: #000;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: left;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+    .feature-btn:hover {
+        background: #000;
+        color: #fff;
+    }
+
+    .feature-btn i {
+        margin-right: 1rem;
+    }
+
+/* --- MODAL STYLES (The "Pop-ups") --- */
+.modal-content {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.modal-header {
+    border-bottom: 2px solid #000;
+    padding: 1.5rem 2rem;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.btn-close {
+    filter: invert(1);
+    opacity: 1;
+}
+/* Makes 'X' button black */
+
+/* --- CONTENT STYLES INSIDE MODALS --- */
+/* Facts */
+.fact-item {
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+    font-size: 1.1rem;
+}
+
+/* Gallery */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1.5rem;
+}
+
+.gallery-img {
+    width: 100%;
+    height: auto;
+    filter: grayscale(100%);
+    transition: filter 0.3s;
+}
+
+    .gallery-img:hover {
+        filter: grayscale(0%);
+    }
+
+/* Messages */
+.clean-input {
+    border: 1px solid #000;
+    border-radius: 0;
+    padding: 1rem;
+    font-weight: bold;
+}
+
+    .clean-input::placeholder {
+        color: #999;
+        font-weight: normal;
+    }
+
+.btn-black {
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 0;
+    padding: 1rem 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+    .btn-black:hover {
+        background: #333;
+        color: #fff;
+    }
+
+.message-card {
+    background: #f9f9f9;
+    border-left: 4px solid #000;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.message-sender {
+    display: block;
+    margin-top: 0.5rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+/* --- MINIMALIST MUSIC PLAYER --- */
+.music-player {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-top: 2px solid #000;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+}
+
+.track-info {
+    font-weight: 700;
+}
+
+.artist-name {
+    font-weight: 300;
+    color: #555;
+    margin-left: 0.5rem;
+}
+
+.player-controls button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    margin-left: 1rem;
+    cursor: pointer;
+    color: #000;
+}
+
+/* --- NAVBAR CAT ICON --- */
+.nav-cat-icon {
+    height: 45px; /* Much smaller to fit navbar */
+    width: auto;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+    .nav-cat-icon:hover {
+        transform: scale(1.1) rotate(5deg); /* Cute tilt effect on hover */
+    }
+
+/* BOUNCE ANIMATION (Keep this) */
+.bouncing-icon {
+    animation: bounce 2s infinite ease-in-out;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* ================= SURPRISE MODAL STYLES ================= */
+
+/* 1. Override B&W filter for Surprise Gallery */
+/* We use !important to ensure this beats the default grayscale rule */
+.surprise-gallery .gallery-img {
+    filter: grayscale(0%) !important;
+    cursor: default; /* No need for hover effect since it's already color */
+    border-radius: 8px; /* Softens the edges for a friendlier look */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Adds a gentle pop off the page */
+    /* Prepare for animation */
+    opacity: 0;
+    transform: scale(0.8);
+    animation: bubblyPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* 2. The "Happy" Bubbly Pop Animation */
+@keyframes bubblyPop {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* 3. Stagger the animation so images pop in one by one */
+/* This creates a cascade effect that feels more surprising */
+.surprise-gallery .gallery-img:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.surprise-gallery .gallery-img:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.surprise-gallery .gallery-img:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.surprise-gallery .gallery-img:nth-child(4) {
+    animation-delay: 0.25s;
+}
+
+.surprise-gallery .gallery-img:nth-child(5) {
+    animation-delay: 0.3s;
+}
+
+.surprise-gallery .gallery-img:nth-child(n+6) {
+    animation-delay: 0.35s;
+}
+/* All remaining images get the last delay */
+
+/* ================= CUSTOM SCROLLBAR ================= */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f9f9f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #000;
+    border-radius: 10px;
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+/* Apply to modals specifically */
+.modal-body::-webkit-scrollbar {
+    width: 4px;
+}
+
+/* ================= HERO TEXT HOVER ================= */
+.hero-title {
+    transition: all 0.4s ease;
+}
+
+    .hero-title:hover {
+        color: transparent;
+        -webkit-text-stroke: 2px #000; /* Creates the black outline */
+        text-shadow: 4px 4px 0px rgba(0,0,0,0.05); /* Slight shadow for depth */
+        cursor: default;
+    }
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
