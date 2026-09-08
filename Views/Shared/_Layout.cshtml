@@ -1,4 +1,4 @@
-﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @functions {
     private string AssetBase() => Configuration["AssetBaseUrl"]?.TrimEnd('/') ?? "";
 }
@@ -99,7 +99,7 @@
             animation: spin 2s linear infinite;
             animation-play-state: paused;
         }
-        @keyframes spin {
+        @@keyframes spin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
@@ -142,7 +142,7 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             transition: background 0.3s, color 0.3s;
         }
-        @media (max-width: 640px) {
+        @@media (max-width: 640px) {
             .modal-overlay { align-items: flex-end; }
             .modal-content {
                 border-radius: 1.5rem 1.5rem 0 0;
