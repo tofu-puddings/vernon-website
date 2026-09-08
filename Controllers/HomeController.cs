@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using System;
+using VernonFanSite.Models;
 using System.Collections.Generic;
 using System.Linq;
-using VernonFanSite.Models;
 
 namespace VernonFanSite.Controllers
 {
