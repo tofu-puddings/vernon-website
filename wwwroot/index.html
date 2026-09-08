@@ -5,16 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vernon Arcade</title>
     <style>
+        /* ──────────────── IMPORTS ──────────────── */
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
         /* ──────────────── BASE ──────────────── */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'VT323', monospace;
             background: #0a0a0f;
             color: #e0e0e0;
             min-height: 100vh;
             overflow-x: hidden;
         }
-        /* Scanline overlay */
+        /* CRT Scanline overlay */
         body::before {
             content: "";
             position: fixed;
@@ -46,8 +49,8 @@
             border-radius: 40px 40px 20px 20px;
             padding: 20px 20px 30px;
             width: 320px;
-            box-shadow: 0 0 60px rgba(0, 243, 255, 0.3), inset 0 -4px 8px rgba(0,0,0,0.8);
-            border: 2px solid #3a3a4a;
+            box-shadow: 0 0 60px rgba(255, 0, 204, 0.3), inset 0 -4px 8px rgba(0,0,0,0.8);
+            border: 2px solid #ff00cc;
             transform: rotate(-2deg);
             transition: transform 0.3s;
         }
@@ -65,31 +68,31 @@
             background: #0f0f1a;
             border-radius: 24px;
             padding: 24px 18px 18px;
-            border: 2px solid #4a4a5a;
-            box-shadow: inset 0 0 20px rgba(0, 243, 255, 0.1);
+            border: 2px solid #ff00cc;
+            box-shadow: inset 0 0 20px rgba(255, 0, 204, 0.1);
             min-height: 200px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            font-family: 'Courier New', monospace;
+            font-family: 'Press Start 2P', monospace;
         }
         .phone-screen .call-icon { font-size: 2.5rem; margin-bottom: 0.25rem; animation: pulse 1.5s infinite; }
         .phone-screen .caller-id {
-            font-size: 1.8rem;
-            color: #00f3ff;
-            text-shadow: 0 0 20px #00f3ff;
+            font-size: 1.2rem;
+            color: #ff00cc;
+            text-shadow: 0 0 20px #ff00cc;
             letter-spacing: 4px;
-            font-weight: bold;
         }
         .phone-screen .question {
-            font-size: 1.4rem;
-            color: #ff00cc;
+            font-size: 1rem;
+            color: #00f3ff;
             margin-top: 0.5rem;
-            text-shadow: 0 0 20px #ff00cc;
+            text-shadow: 0 0 20px #00f3ff;
+            line-height: 1.6;
         }
-        .phone-screen .sub-text { font-size: 0.9rem; color: #8888aa; margin-top: 0.5rem; }
+        .phone-screen .sub-text { font-size: 0.7rem; color: #8888aa; margin-top: 0.5rem; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
         .phone-keypad {
@@ -105,22 +108,22 @@
             color: #aaa;
             padding: 10px 0;
             border-radius: 30px;
-            font-family: 'Courier New', monospace;
-            font-size: 1.2rem;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.8rem;
             box-shadow: inset 0 -3px 0 #0a0a0f, 0 2px 4px rgba(0,0,0,0.5);
             cursor: pointer;
             transition: 0.1s;
         }
         .phone-key:active { transform: scale(0.95); }
         .phone-key.call-btn {
-            background: #00ff41;
-            color: #0a0a0f;
+            background: #ff00cc;
+            color: #fff;
             font-weight: bold;
-            font-size: 1.4rem;
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.4);
+            font-size: 1rem;
+            box-shadow: 0 0 30px rgba(255, 0, 204, 0.4);
             grid-column: span 1;
         }
-        .phone-key.call-btn:hover { background: #33ff66; }
+        .phone-key.call-btn:hover { background: #ff44dd; }
 
         /* ──────────────── ARCADE LAYOUT ──────────────── */
         #mainApp {
@@ -131,29 +134,35 @@
         }
         #mainApp.active { display: flex; }
 
+        /* ── Top Bar ── */
         .top-bar {
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(10, 10, 15, 0.92);
+            background: rgba(10, 10, 15, 0.95);
             backdrop-filter: blur(8px);
-            border-bottom: 2px solid #00f3ff;
-            box-shadow: 0 4px 30px rgba(0, 243, 255, 0.15);
+            border-bottom: 3px solid #ff00cc;
+            box-shadow: 0 4px 30px rgba(255, 0, 204, 0.2);
             padding: 12px 0;
             text-align: center;
         }
         .top-bar h1 {
-            font-family: 'Courier New', monospace;
-            color: #00f3ff;
-            text-shadow: 0 0 30px #00f3ff;
-            font-size: 1.8rem;
+            font-family: 'Press Start 2P', monospace;
+            color: #ffd700;
+            text-shadow: 0 0 30px #ffd700, 0 0 60px #ff00cc;
+            font-size: 1.2rem;
             letter-spacing: 4px;
         }
         .top-bar p {
-            color: #888;
-            font-size: 0.9rem;
+            font-family: 'VT323', monospace;
+            color: #00f3ff;
+            font-size: 1rem;
+            text-shadow: 0 0 20px #00f3ff;
+            margin-top: 4px;
+            letter-spacing: 2px;
         }
 
+        /* ── Arcade Grid ── */
         .arcade-grid {
             display: grid;
             grid-template-columns: 140px 1fr 280px;
@@ -179,16 +188,24 @@
             justify-content: center;
             background: rgba(20, 10, 40, 0.6);
             border-radius: 2rem;
-            border: 2px solid #3a2a5a;
+            border: 2px solid #ff00cc;
+            box-shadow: inset 0 0 40px rgba(255, 0, 204, 0.05), 0 0 30px rgba(255, 0, 204, 0.1);
             padding: 1.5rem 0.5rem;
+        }
+        .joystick-panel .label {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.5rem;
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
         }
         .joystick-base {
             width: 120px;
             height: 120px;
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, #2a2a3a, #0a0a0f);
-            border: 4px solid #00f3ff;
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.2), inset 0 0 20px rgba(0,0,0,0.8);
+            border: 4px solid #ffd700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2), inset 0 0 20px rgba(0,0,0,0.8);
             position: relative;
             margin-bottom: 1.5rem;
         }
@@ -202,9 +219,11 @@
             left: 50%;
             transform: translate(-50%, -50%);
             box-shadow: 0 0 30px rgba(255, 0, 204, 0.4);
-            border: 2px solid #ff66dd;
+            border: 2px solid #ffd700;
             cursor: grab;
         }
+        .joystick-stick:active { cursor: grabbing; }
+
         .dpad {
             display: grid;
             grid-template-columns: 40px 40px 40px;
@@ -214,7 +233,7 @@
         }
         .dpad-btn {
             background: #1a1a2a;
-            border: 1px solid #3a3a5a;
+            border: 2px solid #ff00cc;
             border-radius: 6px;
             color: #00f3ff;
             font-size: 1.2rem;
@@ -223,86 +242,121 @@
             align-items: center;
             justify-content: center;
             transition: 0.1s;
-            box-shadow: inset 0 -2px 0 #0a0a0f;
+            box-shadow: 0 0 10px rgba(255, 0, 204, 0.1);
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.8rem;
         }
-        .dpad-btn:hover { background: #2a2a4a; border-color: #00f3ff; }
+        .dpad-btn:hover { background: #2a2a4a; border-color: #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.2); }
         .dpad-btn:active { transform: scale(0.92); }
         .dpad-up { grid-column: 2; grid-row: 1; }
         .dpad-left { grid-column: 1; grid-row: 2; }
-        .dpad-center { grid-column: 2; grid-row: 2; background: #ff00cc; border-color: #ff00cc; color: #fff; font-weight: bold; font-size: 0.7rem; }
+        .dpad-center {
+            grid-column: 2; grid-row: 2;
+            background: #ff00cc;
+            border-color: #ffd700;
+            color: #fff;
+            font-weight: bold;
+            font-size: 0.6rem;
+            box-shadow: 0 0 30px rgba(255, 0, 204, 0.3);
+        }
         .dpad-right { grid-column: 3; grid-row: 2; }
         .dpad-down { grid-column: 2; grid-row: 3; }
+
         .select-btn {
             background: #ff00cc;
-            border: none;
+            border: 2px solid #ffd700;
             color: #fff;
-            font-family: 'Courier New', monospace;
-            font-size: 1.2rem;
-            padding: 0.5rem 2rem;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.7rem;
+            padding: 0.5rem 1.5rem;
             border-radius: 40px;
             box-shadow: 0 0 30px rgba(255, 0, 204, 0.3);
             cursor: pointer;
             transition: 0.2s;
             margin-top: 0.5rem;
+            letter-spacing: 2px;
         }
         .select-btn:hover { box-shadow: 0 0 50px rgba(255, 0, 204, 0.6); transform: scale(1.05); }
 
-        /* ── Center ── */
+        /* ── Center: Dynamic Content ── */
         .center-panel {
-            background: rgba(10, 10, 20, 0.7);
+            background: rgba(10, 10, 20, 0.8);
             border-radius: 2rem;
-            border: 2px solid #00f3ff;
-            box-shadow: inset 0 0 60px rgba(0, 243, 255, 0.05), 0 0 40px rgba(0, 243, 255, 0.1);
+            border: 2px solid #ffd700;
+            box-shadow: inset 0 0 60px rgba(255, 215, 0, 0.05), 0 0 40px rgba(255, 215, 0, 0.1);
             padding: 1.5rem;
             position: relative;
             overflow: hidden;
         }
-        .center-panel h2 {
-            font-family: 'Courier New', monospace;
-            color: #00f3ff;
-            text-shadow: 0 0 30px #00f3ff;
-            margin-bottom: 1rem;
+        .center-panel .glow-border {
+            position: absolute;
+            inset: -2px;
+            border-radius: 2rem;
+            background: linear-gradient(45deg, #ff00cc, #ffd700, #00f3ff, #ff00cc);
+            background-size: 300% 300%;
+            animation: borderGlow 4s ease-in-out infinite;
+            z-index: -1;
+            opacity: 0.3;
         }
-        .center-panel p { color: #ccc; line-height: 1.6; }
+        @keyframes borderGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .center-panel h2 {
+            font-family: 'Press Start 2P', monospace;
+            color: #ffd700;
+            text-shadow: 0 0 30px #ffd700;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+        .center-panel p, .center-panel li {
+            font-family: 'VT323', monospace;
+            color: #e0e0e0;
+            font-size: 1.2rem;
+            line-height: 1.8;
+        }
         .center-panel ul { list-style: none; padding: 0; }
         .center-panel ul li {
             padding: 0.4rem 0;
             border-bottom: 1px solid #1a1a2a;
-            color: #ccc;
         }
         .center-panel ul li::before { content: "✦"; color: #ff00cc; margin-right: 0.5rem; }
 
-        /* ── Right ── */
+        /* ── Right Panel (Fan Messages) ── */
         .right-panel {
-            background: rgba(20, 10, 40, 0.6);
+            background: rgba(20, 10, 40, 0.8);
             border-radius: 2rem;
             border: 2px solid #ff00cc;
-            box-shadow: inset 0 0 40px rgba(255, 0, 204, 0.05);
+            box-shadow: inset 0 0 40px rgba(255, 0, 204, 0.05), 0 0 30px rgba(255, 0, 204, 0.1);
             padding: 1.5rem 1rem;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 0.75rem;
         }
         .right-panel .placeholder-img {
             width: 100%;
             aspect-ratio: 1/1;
             border-radius: 1.5rem;
             background: linear-gradient(135deg, #1a0b2e, #0a0a0f);
-            border: 2px solid #ff00cc;
+            border: 2px solid #ffd700;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 4rem;
-            color: #ff00cc;
+            color: #ffd700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
         }
         .right-panel .msg-title {
-            font-family: 'Courier New', monospace;
+            font-family: 'Press Start 2P', monospace;
             color: #ff00cc;
-            font-size: 1.2rem;
+            font-size: 0.7rem;
             text-align: center;
             text-shadow: 0 0 20px #ff00cc;
-            border-bottom: 1px solid #3a2a5a;
+            border-bottom: 2px solid #ff00cc;
             padding-bottom: 0.5rem;
+            letter-spacing: 2px;
         }
         .right-panel .msg-list {
             flex: 1;
@@ -311,52 +365,191 @@
             flex-direction: column;
             gap: 0.5rem;
             max-height: 200px;
+            padding-right: 0.25rem;
         }
         .msg-item {
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5);
             padding: 0.5rem 0.75rem;
             border-radius: 0.75rem;
-            border-left: 3px solid #00f3ff;
-            font-size: 0.8rem;
+            border-left: 3px solid #ffd700;
+            font-family: 'VT323', monospace;
+            font-size: 1rem;
             color: #ccc;
         }
-        .msg-item .sender { color: #00f3ff; font-weight: 600; }
+        .msg-item .sender { color: #ffd700; font-weight: bold; }
         .right-panel .msg-form input,
         .right-panel .msg-form textarea {
             width: 100%;
             background: #0a0a0f;
-            border: 1px solid #3a2a5a;
+            border: 2px solid #ff00cc;
             border-radius: 0.75rem;
             padding: 0.5rem 0.75rem;
             color: #fff;
-            margin-bottom: 0.5rem;
+            font-family: 'VT323', monospace;
+            font-size: 1rem;
+            margin-bottom: 0.4rem;
             outline: none;
-            font-size: 0.8rem;
+            transition: 0.2s;
         }
         .right-panel .msg-form input:focus,
-        .right-panel .msg-form textarea:focus { border-color: #00f3ff; }
+        .right-panel .msg-form textarea:focus { border-color: #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); }
+        .right-panel .msg-form input::placeholder,
+        .right-panel .msg-form textarea::placeholder { color: #555; }
         .right-panel .msg-form button {
             width: 100%;
-            background: #00f3ff;
-            color: #0a0a0f;
-            border: none;
-            padding: 0.5rem;
+            background: #ff00cc;
+            color: #fff;
+            border: 2px solid #ffd700;
+            padding: 0.6rem;
             border-radius: 40px;
-            font-weight: 700;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.6rem;
             cursor: pointer;
+            transition: 0.2s;
+            letter-spacing: 2px;
         }
-        .right-panel .msg-form button:hover { box-shadow: 0 0 30px rgba(0, 243, 255, 0.3); }
+        .right-panel .msg-form button:hover {
+            box-shadow: 0 0 30px rgba(255, 0, 204, 0.3);
+            transform: scale(1.02);
+        }
 
+        /* ── Disco Grid ── */
+        .disco-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 0.75rem;
+        }
+        .disco-card {
+            background: rgba(0,0,0,0.4);
+            border-radius: 1rem;
+            padding: 0.75rem;
+            text-align: center;
+            border: 1px solid #ff00cc;
+            transition: 0.2s;
+        }
+        .disco-card:hover { border-color: #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); }
+        .disco-card .icon { font-size: 2rem; margin-bottom: 0.25rem; }
+        .disco-card .title { font-family: 'VT323', monospace; color: #fff; font-size: 0.9rem; }
+        .disco-card .year { color: #888; font-size: 0.7rem; }
+
+        /* ── Music Player (Arcade Style) ── */
+        .music-player-arcade {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #ffd700;
+            border-radius: 1rem;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.05);
+        }
+        .music-player-arcade .track-info {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            font-family: 'VT323', monospace;
+        }
+        .music-player-arcade .track-info .title {
+            color: #ffd700;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .music-player-arcade .track-info .artist { color: #888; font-size: 1rem; }
+        .music-player-arcade .controls {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .music-player-arcade .controls button {
+            background: none;
+            border: none;
+            color: #00f3ff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'VT323', monospace;
+        }
+        .music-player-arcade .controls button:hover {
+            color: #ffd700;
+            text-shadow: 0 0 20px #ffd700;
+        }
+        .music-player-arcade .controls .play-btn { font-size: 2rem; color: #ff00cc; }
+        .music-player-arcade .controls .play-btn:hover { color: #ffd700; }
+        .record-icon {
+            display: inline-block;
+            animation: spin 2s linear infinite;
+            animation-play-state: paused;
+            font-size: 1.5rem;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* ── Toast ── */
         .toast-container {
             position: fixed; bottom: 2rem; right: 2rem; z-index: 9000;
         }
         .toast {
-            background: #1a0b2e; border: 1px solid #00f3ff;
-            color: #fff; padding: 0.75rem 1.5rem; border-radius: 0.75rem;
-            display: none; align-items: center; gap: 0.75rem;
-            box-shadow: 0 0 40px rgba(0, 243, 255, 0.2);
+            background: #1a0b2e;
+            border: 2px solid #ffd700;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.2);
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
         }
         .toast.show { display: flex; }
+
+        /* ── Random Box ── */
+        .random-box {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            text-align: center;
+            border: 2px dashed #ff00cc;
+        }
+        .random-box .quote {
+            font-size: 1.6rem;
+            color: #ffd700;
+            font-family: 'VT323', monospace;
+            margin: 1rem 0;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+        }
+        .random-box .btn-spin {
+            background: #ff00cc;
+            border: 2px solid #ffd700;
+            color: #fff;
+            padding: 0.75rem 2rem;
+            border-radius: 40px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 0 30px rgba(255, 0, 204, 0.3);
+            letter-spacing: 2px;
+        }
+        .random-box .btn-spin:hover { box-shadow: 0 0 60px rgba(255, 0, 204, 0.6); transform: scale(1.05); }
+
+        /* ── Back to Top ── */
+        #backToTop {
+            position: fixed; bottom: 6rem; right: 2rem; z-index: 999;
+            background: #ff00cc; color: #fff; border: 2px solid #ffd700;
+            width: 48px; height: 48px; border-radius: 9999px;
+            font-size: 1.5rem; cursor: pointer;
+            box-shadow: 0 0 30px rgba(255, 0, 204, 0.3);
+            opacity: 0; transition: 0.3s;
+            font-family: 'VT323', monospace;
+        }
+        #backToTop.visible { opacity: 1; }
+        #backToTop:hover { box-shadow: 0 0 50px rgba(255, 0, 204, 0.5); transform: scale(1.05); }
     </style>
 </head>
 <body>
@@ -392,12 +585,13 @@
     <div id="mainApp">
         <div class="top-bar">
             <h1>✦ VERNON ARCADE ✦</h1>
-            <p>PRESS SELECT TO EXPLORE</p>
+            <p>▶ PRESS SELECT TO EXPLORE ◀</p>
         </div>
 
         <div class="arcade-grid">
             <!-- LEFT: JOYSTICK -->
             <div class="joystick-panel">
+                <div class="label">▶ CTRL</div>
                 <div class="joystick-base">
                     <div class="joystick-stick"></div>
                 </div>
@@ -413,6 +607,22 @@
 
             <!-- CENTER -->
             <div class="center-panel" id="centerPanel">
+                <div class="glow-border"></div>
+                <!-- Music Player (Arcade Style) -->
+                <div class="music-player-arcade">
+                    <div class="track-info">
+                        <span class="record-icon" id="recordIcon">💿</span>
+                        <span class="title" id="trackTitle">Black Eye</span>
+                        <span class="artist" id="trackArtist">/ Vernon</span>
+                    </div>
+                    <div class="controls">
+                        <button onclick="prevTrack()">⏮</button>
+                        <button onclick="togglePlay()" id="playBtn" class="play-btn">▶</button>
+                        <button onclick="nextTrack()">⏭</button>
+                    </div>
+                    <audio id="audioPlayer"></audio>
+                </div>
+
                 <h2 id="tabTitle">✦ PROFILE ✦</h2>
                 <div id="tabContent">
                     <ul>
@@ -427,7 +637,7 @@
                 </div>
             </div>
 
-            <!-- RIGHT -->
+            <!-- RIGHT: Fan Messages -->
             <div class="right-panel">
                 <div class="placeholder-img">💿</div>
                 <div class="msg-title">✧ FAN MESSAGES ✧</div>
@@ -436,8 +646,8 @@
                     <div class="msg-item"><span class="sender">HANSOLFAN</span> "Love his vibe and music."</div>
                 </div>
                 <form class="msg-form" id="msgForm">
-                    <input type="text" placeholder="Your name..." maxlength="20" required />
-                    <textarea placeholder="Your message..." rows="2" maxlength="200" required></textarea>
+                    <input type="text" id="msgName" placeholder="YOUR NAME..." maxlength="20" required />
+                    <textarea id="msgContent" placeholder="YOUR MESSAGE..." rows="2" maxlength="200" required></textarea>
                     <button type="submit">SEND MESSAGE</button>
                 </form>
             </div>
@@ -452,12 +662,66 @@
         </div>
     </div>
 
+    <!-- ===== BACK TO TOP ===== -->
+    <button id="backToTop">↑</button>
+
     <script>
         // ── INTRO ──
         document.getElementById('callBtn').addEventListener('click', function() {
             document.getElementById('introScreen').classList.add('hidden');
             document.getElementById('mainApp').classList.add('active');
         });
+
+        // ── MUSIC PLAYER ──
+        const playlist = [
+            { title: "Black Eye", artist: "/ Vernon", src: "" },
+            { title: "Shining Star", artist: "/ Vernon", src: "" }
+        ];
+        let currentTrackIndex = 0;
+        const audio = document.getElementById('audioPlayer');
+        const playBtn = document.getElementById('playBtn');
+        const trackTitle = document.getElementById('trackTitle');
+        const trackArtist = document.getElementById('trackArtist');
+        const recordIcon = document.getElementById('recordIcon');
+
+        function loadTrack(index) {
+            const track = playlist[index];
+            if (track.src) {
+                audio.src = track.src;
+                trackTitle.textContent = track.title;
+                trackArtist.textContent = track.artist;
+            }
+        }
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                playBtn.textContent = '⏸';
+                recordIcon.style.animationPlayState = 'running';
+            } else {
+                audio.pause();
+                playBtn.textContent = '▶';
+                recordIcon.style.animationPlayState = 'paused';
+            }
+        }
+        function nextTrack() {
+            currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+            loadTrack(currentTrackIndex);
+            if (audio.src) {
+                audio.play();
+                playBtn.textContent = '⏸';
+                recordIcon.style.animationPlayState = 'running';
+            }
+        }
+        function prevTrack() {
+            currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+            loadTrack(currentTrackIndex);
+            if (audio.src) {
+                audio.play();
+                playBtn.textContent = '⏸';
+                recordIcon.style.animationPlayState = 'running';
+            }
+        }
+        loadTrack(0);
 
         // ── TAB DATA ──
         const tabs = [
@@ -475,54 +739,38 @@
             },
             {
                 title: '🎵 DISCOGRAPHY',
-                content: `<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
-                    <div style="background:rgba(0,0,0,0.3);border-radius:1rem;padding:1rem;text-align:center;border:1px solid #2a2a4a;">
-                        <div style="font-size:3rem;">💿</div>
-                        <div><strong>17 Is Right Here</strong></div>
-                        <div style="color:#888;font-size:0.8rem;">2024 · Best</div>
-                    </div>
-                    <div style="background:rgba(0,0,0,0.3);border-radius:1rem;padding:1rem;text-align:center;border:1px solid #2a2a4a;">
-                        <div style="font-size:3rem;">💿</div>
-                        <div><strong>Spill The Feels</strong></div>
-                        <div style="color:#888;font-size:0.8rem;">2024 · Mini 12</div>
-                    </div>
-                    <div style="background:rgba(0,0,0,0.3);border-radius:1rem;padding:1rem;text-align:center;border:1px solid #2a2a4a;">
-                        <div style="font-size:3rem;">💿</div>
-                        <div><strong>FML</strong></div>
-                        <div style="color:#888;font-size:0.8rem;">2023 · Mini 10</div>
-                    </div>
-                    <div style="background:rgba(0,0,0,0.3);border-radius:1rem;padding:1rem;text-align:center;border:1px solid #2a2a4a;">
-                        <div style="font-size:3rem;">💿</div>
-                        <div><strong>17 Carat</strong></div>
-                        <div style="color:#888;font-size:0.8rem;">2015 · Debut</div>
-                    </div>
+                content: `<div class="disco-grid">
+                    <div class="disco-card"><div class="icon">💿</div><div class="title">17 Is Right Here</div><div class="year">2024 · Best</div></div>
+                    <div class="disco-card"><div class="icon">💿</div><div class="title">Spill The Feels</div><div class="year">2024 · Mini 12</div></div>
+                    <div class="disco-card"><div class="icon">💿</div><div class="title">FML</div><div class="year">2023 · Mini 10</div></div>
+                    <div class="disco-card"><div class="icon">💿</div><div class="title">17 Carat</div><div class="year">2015 · Debut</div></div>
                 </div>`
             },
             {
                 title: '📸 ALBUMS',
                 content: `<div>
-                    <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1rem;">
-                        <span style="color:#ff00cc;font-weight:bold;min-width:60px;">2024</span>
-                        <span style="background:#1a0b2e;padding:0.25rem 0.75rem;border-radius:20px;border:1px solid #00f3ff;">🔥 Super</span>
+                    <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
+                        <span style="color:#ff00cc;font-weight:bold;font-family:'Press Start 2P',monospace;font-size:0.6rem;min-width:60px;">2024</span>
+                        <span style="background:#1a0b2e;padding:0.25rem 0.75rem;border-radius:20px;border:1px solid #ffd700;">🔥 Super</span>
                         <span style="background:#1a0b2e;padding:0.25rem 0.75rem;border-radius:20px;border:1px solid #ff00cc;">✨ Maestro</span>
                     </div>
-                    <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1rem;">
-                        <span style="color:#ff00cc;font-weight:bold;min-width:60px;">2023</span>
-                        <span style="background:#1a0b2e;padding:0.25rem 0.75rem;border-radius:20px;border:1px solid #00f3ff;">🌊 Super</span>
+                    <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
+                        <span style="color:#ff00cc;font-weight:bold;font-family:'Press Start 2P',monospace;font-size:0.6rem;min-width:60px;">2023</span>
+                        <span style="background:#1a0b2e;padding:0.25rem 0.75rem;border-radius:20px;border:1px solid #ffd700;">🌊 Super</span>
                         <span style="background:#1a0b2e;padding:0.25rem 0.75rem;border-radius:20px;border:1px solid #ff00cc;">🔥 FML</span>
                     </div>
-                    <div style="display:flex;flex-wrap:wrap;gap:1rem;">
-                        <span style="color:#ff00cc;font-weight:bold;min-width:60px;">2015</span>
-                        <span style="background:#1a0b2e;padding:0.25rem 0.75rem;border-radius:20px;border:1px solid #00f3ff;">🌟 Adore U</span>
+                    <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+                        <span style="color:#ff00cc;font-weight:bold;font-family:'Press Start 2P',monospace;font-size:0.6rem;min-width:60px;">2015</span>
+                        <span style="background:#1a0b2e;padding:0.25rem 0.75rem;border-radius:20px;border:1px solid #ffd700;">🌟 Adore U</span>
                     </div>
                 </div>`
             },
             {
                 title: '🎰 RANDOM',
-                content: `<div style="background:rgba(0,0,0,0.4);border-radius:1.5rem;padding:2rem;text-align:center;border:2px dashed #ff00cc;">
-                    <p style="color:#888;">PRESS SELECT TO GET A RANDOM FACT</p>
-                    <p style="font-size:1.8rem;color:#fff;font-family:'Courier New',monospace;margin:1rem 0;" id="randomQuote">"Time is gold."</p>
-                    <button style="background:#ff00cc;border:none;color:#fff;padding:0.75rem 2rem;border-radius:40px;font-weight:bold;cursor:pointer;font-size:1.2rem;" id="spinBtn">⟳ SPIN</button>
+                content: `<div class="random-box">
+                    <p style="color:#888;font-family:'VT323',monospace;font-size:1rem;">PRESS SELECT TO GET A RANDOM FACT</p>
+                    <p class="quote" id="randomQuote">"Time is gold."</p>
+                    <button class="btn-spin" id="spinBtn">⟳ SPIN</button>
                 </div>`
             }
         ];
@@ -535,6 +783,27 @@
             currentTab = index;
             document.getElementById('tabTitle').textContent = tabs[index].title;
             document.getElementById('tabContent').innerHTML = tabs[index].content;
+            // Re-bind random quote button if it exists
+            const spinBtn = document.getElementById('spinBtn');
+            if (spinBtn) {
+                spinBtn.addEventListener('click', function() {
+                    const quotes = [
+                        "I want to be a person who gives good influence.",
+                        "Life is like a camera – focus on what's important.",
+                        "Let's just be happy.",
+                        "Dreams do come true.",
+                        "I love our CARATs.",
+                        "Music is my language.",
+                        "Stay true to yourself.",
+                        "Every moment is a memory.",
+                        "Time is gold.",
+                        "Be yourself, everyone else is taken."
+                    ];
+                    const randomIndex = Math.floor(Math.random() * quotes.length);
+                    document.getElementById('randomQuote').textContent = '"' + quotes[randomIndex] + '"';
+                    showToast('✨ VERNON SAYS: ' + quotes[randomIndex]);
+                });
+            }
         }
 
         switchTab(0);
@@ -553,33 +822,6 @@
             showToast('🎮 ARCADE SELECT: ' + tabs[rand].title);
         });
 
-        // ── RANDOM QUOTE ──
-        const quotes = [
-            "I want to be a person who gives good influence.",
-            "Life is like a camera – focus on what's important.",
-            "Let's just be happy.",
-            "Dreams do come true.",
-            "I love our CARATs.",
-            "Music is my language.",
-            "Stay true to yourself.",
-            "Every moment is a memory."
-        ];
-        document.addEventListener('click', function(e) {
-            if (e.target.id === 'spinBtn') {
-                const randomIndex = Math.floor(Math.random() * quotes.length);
-                document.getElementById('randomQuote').textContent = '"' + quotes[randomIndex] + '"';
-                showToast('✨ VERNON SAYS: ' + quotes[randomIndex]);
-            }
-        });
-
-        // ── TOAST ──
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toastMsg').textContent = message;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 4000);
-        }
-
         // ── KEYBOARD SHORTCUTS ──
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft') switchTab(currentTab - 1);
@@ -590,20 +832,126 @@
             }
         });
 
-        // ── MESSAGE FORM ──
+        // ── BACK TO TOP ──
+        const backToTopBtn = document.getElementById('backToTop');
+        window.addEventListener('scroll', function() {
+            backToTopBtn.classList.toggle('visible', window.scrollY > 300);
+        });
+        backToTopBtn.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ── TOAST ──
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+
+        // ── PROFANITY FILTER & VALIDATION ──
+        const BAD_WORDS = [
+            'fuck', 'shit', 'ass', 'bitch', 'cunt', 'whore', 'slut', 'bastard',
+            'idiot', 'stupid', 'hate', 'kill', 'die', 'racist', 'nazi', 'hitler',
+            'suicide', 'selfharm', 'fag', 'retard', 'dyke', 'porn', 'sex', 'nude',
+            'cock', 'dick', 'pussy', 'penis', 'vagina', 'asshole', 'damn', 'hell'
+        ];
+
+        function containsProfanity(text) {
+            const lower = text.toLowerCase().trim();
+            return BAD_WORDS.some(word => lower.includes(word));
+        }
+
+        function isKeyboardSpam(text) {
+            // Check for repetitive characters (e.g., "asdfasdf" or "kkkkkk")
+            const trimmed = text.trim();
+            if (trimmed.length < 3) return false;
+            // Count unique characters
+            const unique = new Set(trimmed.toLowerCase());
+            if (unique.size <= 2) return true;
+            // Check for repeated patterns (e.g., "abcabcabc")
+            const pattern = trimmed.match(/(.+)\1{2,}/);
+            if (pattern && pattern[1].length >= 2) return true;
+            // Check for excessive repeated single characters (e.g., "aaaaaa")
+            if (/(.)\1{5,}/.test(trimmed)) return true;
+            return false;
+        }
+
+        function containsHateSpeech(text) {
+            const hateTerms = ['hate', 'kill', 'die', 'stupid', 'idiot', 'racist', 'nazi'];
+            const lower = text.toLowerCase().trim();
+            return hateTerms.some(term => lower.includes(term));
+        }
+
+        // ── MESSAGE FORM VALIDATION ──
         document.getElementById('msgForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const name = this.querySelector('input').value.trim();
-            const msg = this.querySelector('textarea').value.trim();
-            if (name && msg) {
-                const list = document.getElementById('msgList');
-                const div = document.createElement('div');
-                div.className = 'msg-item';
-                div.innerHTML = `<span class="sender">${name}</span> "${msg}"`;
-                list.appendChild(div);
-                this.querySelector('input').value = '';
-                this.querySelector('textarea').value = '';
-                showToast('💬 Message sent!');
+
+            const nameInput = document.getElementById('msgName');
+            const msgInput = document.getElementById('msgContent');
+            const name = nameInput.value.trim();
+            const msg = msgInput.value.trim();
+
+            // Empty check
+            if (!name || !msg) {
+                showToast('⚠️ Please fill in both fields.');
+                return;
+            }
+
+            // Length check
+            if (name.length > 20) {
+                showToast('⚠️ Name must be under 20 characters.');
+                return;
+            }
+            if (msg.length > 200) {
+                showToast('⚠️ Message must be under 200 characters.');
+                return;
+            }
+
+            // Profanity check
+            if (containsProfanity(name) || containsProfanity(msg)) {
+                showToast('⚠️ Please avoid using inappropriate language.');
+                return;
+            }
+
+            // Hate speech check
+            if (containsHateSpeech(name) || containsHateSpeech(msg)) {
+                showToast('⚠️ Please keep messages respectful and kind.');
+                return;
+            }
+
+            // Keyboard spam check
+            if (isKeyboardSpam(msg)) {
+                showToast('⚠️ Please write a meaningful message (no spam).');
+                return;
+            }
+
+            // All validations passed – add message
+            const list = document.getElementById('msgList');
+            const div = document.createElement('div');
+            div.className = 'msg-item';
+            div.innerHTML = `<span class="sender">${escapeHtml(name)}</span> "${escapeHtml(msg)}"`;
+            list.appendChild(div);
+
+            // Clear form
+            nameInput.value = '';
+            msgInput.value = '';
+
+            showToast('💬 Message sent! ✦');
+        });
+
+        // Simple escape function to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ── REAL-TIME CHARACTER COUNTER ──
+        document.getElementById('msgContent').addEventListener('input', function() {
+            const remaining = 200 - this.value.length;
+            if (remaining < 0) {
+                this.value = this.value.slice(0, 200);
             }
         });
     </script>
