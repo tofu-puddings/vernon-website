@@ -1,9 +1,9 @@
 {
     "owner": {
         "username": "tofu-puddings",
-        "email": "[email protected]"
+        "email": "sillyandsleepypig@gmail.com"
     },
     "records": {
-        "A": ["216.24.57.1"]
+        "CNAME": "https://vernon-website-1.onrender.com/"
     }
 }
