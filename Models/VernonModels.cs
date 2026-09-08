@@ -1,17 +1,10 @@
-﻿namespace VernonFanSite.Models
-{
-    public class FanMessage
-    {
-        public int Id { get; set; }
-        public string SenderName { get; set; }
-        public string MessageContent { get; set; }
-        public DateTime PostedAt { get; set; } = DateTime.Now;
-    }
+using System.Collections.Generic;
 
-    // We will use this to pass data to the view
+namespace VernonFanSite.Models
+{
     public class HomeViewModel
     {
-        public List<FanMessage> Messages { get; set; }
-        public List<string> FunFacts { get; set; }
+        public List<Message> Messages { get; set; } = new List<Message>();
+        public List<string> FunFacts { get; set; } = new List<string>();
     }
 }
