@@ -15,6 +15,9 @@
             background: #0a0a0f;
             color: #e0e0e0;
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             overflow-x: hidden;
         }
         /* CRT Scanline overlay */
@@ -130,21 +133,23 @@
             display: none;
             flex-direction: column;
             min-height: 100vh;
+            width: 100%;
             background: #0a0a0f;
+            position: relative;
         }
         #mainApp.active { display: flex; }
 
         /* ── Top Bar ── */
         .top-bar {
-            position: sticky;
-            top: 0;
-            z-index: 100;
             background: rgba(10, 10, 15, 0.95);
             backdrop-filter: blur(8px);
             border-bottom: 3px solid #ff00cc;
             box-shadow: 0 4px 30px rgba(255, 0, 204, 0.2);
             padding: 12px 0;
             text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         .top-bar h1 {
             font-family: 'Press Start 2P', monospace;
@@ -162,56 +167,65 @@
             letter-spacing: 2px;
         }
 
-        /* ── Arcade Grid ── */
-        .arcade-grid {
-            display: grid;
-            grid-template-columns: 140px 1fr 280px;
-            gap: 1.5rem;
-            padding: 1.5rem;
+        /* ── Main Arcade Container ── */
+        .arcade-container {
             flex: 1;
-            min-height: calc(100vh - 110px);
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            gap: 1.5rem;
+        }
+
+        /* ── Arcade Machine (Center + Joystick + Side panel) ── */
+        .arcade-machine {
+            display: grid;
+            grid-template-columns: 120px 1fr 240px;
+            gap: 1.5rem;
+            flex: 1;
         }
         @media (max-width: 900px) {
-            .arcade-grid {
+            .arcade-machine {
                 grid-template-columns: 1fr;
                 grid-template-rows: auto 1fr auto;
-                padding: 1rem;
                 gap: 1rem;
             }
         }
 
-        /* ── Left: Joystick ── */
+        /* ── Left: Joystick Panel ── */
         .joystick-panel {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: rgba(20, 10, 40, 0.6);
+            background: rgba(20, 10, 40, 0.7);
             border-radius: 2rem;
             border: 2px solid #ff00cc;
             box-shadow: inset 0 0 40px rgba(255, 0, 204, 0.05), 0 0 30px rgba(255, 0, 204, 0.1);
-            padding: 1.5rem 0.5rem;
+            padding: 1rem 0.5rem;
         }
         .joystick-panel .label {
             font-family: 'Press Start 2P', monospace;
             font-size: 0.5rem;
             color: #ffd700;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
             letter-spacing: 2px;
         }
         .joystick-base {
-            width: 120px;
-            height: 120px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, #2a2a3a, #0a0a0f);
-            border: 4px solid #ffd700;
+            border: 3px solid #ffd700;
             box-shadow: 0 0 30px rgba(255, 215, 0, 0.2), inset 0 0 20px rgba(0,0,0,0.8);
             position: relative;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
         .joystick-stick {
-            width: 44px;
-            height: 44px;
+            width: 32px;
+            height: 32px;
             background: radial-gradient(circle at 40% 40%, #ff00cc, #990066);
             border-radius: 50%;
             position: absolute;
@@ -226,17 +240,17 @@
 
         .dpad {
             display: grid;
-            grid-template-columns: 40px 40px 40px;
-            grid-template-rows: 40px 40px 40px;
-            gap: 4px;
-            margin-bottom: 1rem;
+            grid-template-columns: 30px 30px 30px;
+            grid-template-rows: 30px 30px 30px;
+            gap: 3px;
+            margin-bottom: 0.5rem;
         }
         .dpad-btn {
             background: #1a1a2a;
             border: 2px solid #ff00cc;
-            border-radius: 6px;
+            border-radius: 4px;
             color: #00f3ff;
-            font-size: 1.2rem;
+            font-size: 0.8rem;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -244,7 +258,7 @@
             transition: 0.1s;
             box-shadow: 0 0 10px rgba(255, 0, 204, 0.1);
             font-family: 'Press Start 2P', monospace;
-            font-size: 0.8rem;
+            font-size: 0.5rem;
         }
         .dpad-btn:hover { background: #2a2a4a; border-color: #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.2); }
         .dpad-btn:active { transform: scale(0.92); }
@@ -256,7 +270,7 @@
             border-color: #ffd700;
             color: #fff;
             font-weight: bold;
-            font-size: 0.6rem;
+            font-size: 0.4rem;
             box-shadow: 0 0 30px rgba(255, 0, 204, 0.3);
         }
         .dpad-right { grid-column: 3; grid-row: 2; }
@@ -267,160 +281,94 @@
             border: 2px solid #ffd700;
             color: #fff;
             font-family: 'Press Start 2P', monospace;
-            font-size: 0.7rem;
-            padding: 0.5rem 1.5rem;
+            font-size: 0.5rem;
+            padding: 0.4rem 1rem;
             border-radius: 40px;
             box-shadow: 0 0 30px rgba(255, 0, 204, 0.3);
             cursor: pointer;
             transition: 0.2s;
-            margin-top: 0.5rem;
+            margin-top: 0.25rem;
             letter-spacing: 2px;
         }
         .select-btn:hover { box-shadow: 0 0 50px rgba(255, 0, 204, 0.6); transform: scale(1.05); }
 
-        /* ── Center: Dynamic Content ── */
-        .center-panel {
-            background: rgba(10, 10, 20, 0.8);
+        /* ── Center: Arcade Screen ── */
+        .arcade-screen {
+            background: #0a0a0f;
             border-radius: 2rem;
-            border: 2px solid #ffd700;
-            box-shadow: inset 0 0 60px rgba(255, 215, 0, 0.05), 0 0 40px rgba(255, 215, 0, 0.1);
+            border: 4px solid #ffd700;
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.15), inset 0 0 60px rgba(255, 215, 0, 0.03);
             padding: 1.5rem;
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(2px);
         }
-        .center-panel .glow-border {
+        .arcade-screen::before {
+            content: "";
             position: absolute;
-            inset: -2px;
-            border-radius: 2rem;
-            background: linear-gradient(45deg, #ff00cc, #ffd700, #00f3ff, #ff00cc);
-            background-size: 300% 300%;
-            animation: borderGlow 4s ease-in-out infinite;
-            z-index: -1;
-            opacity: 0.3;
+            inset: 0;
+            background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.6) 100%);
+            pointer-events: none;
+            z-index: 1;
         }
-        @keyframes borderGlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .arcade-screen .screen-content {
+            position: relative;
+            z-index: 2;
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 0.5rem;
         }
-        .center-panel h2 {
+        .screen-content::-webkit-scrollbar { width: 6px; }
+        .screen-content::-webkit-scrollbar-track { background: transparent; }
+        .screen-content::-webkit-scrollbar-thumb { background: #ffd700; border-radius: 10px; }
+
+        /* ── Screen Content Styles ── */
+        .screen-content .project-title {
             font-family: 'Press Start 2P', monospace;
             color: #ffd700;
             text-shadow: 0 0 30px #ffd700;
-            font-size: 1rem;
+            font-size: 1.2rem;
             margin-bottom: 1rem;
             letter-spacing: 2px;
+            text-align: center;
         }
-        .center-panel p, .center-panel li {
+        .screen-content .project-description {
             font-family: 'VT323', monospace;
             color: #e0e0e0;
             font-size: 1.2rem;
             line-height: 1.8;
+            text-align: center;
+            max-width: 80%;
+            margin: 0 auto;
         }
-        .center-panel ul { list-style: none; padding: 0; }
-        .center-panel ul li {
+        .screen-content .project-description .highlight {
+            color: #ff00cc;
+            text-shadow: 0 0 20px #ff00cc;
+        }
+        .screen-content .project-description .gold {
+            color: #ffd700;
+            text-shadow: 0 0 20px #ffd700;
+        }
+        /* Profile list */
+        .profile-list { list-style: none; padding: 0; }
+        .profile-list li {
             padding: 0.4rem 0;
             border-bottom: 1px solid #1a1a2a;
-        }
-        .center-panel ul li::before { content: "✦"; color: #ff00cc; margin-right: 0.5rem; }
-
-        /* ── Right Panel (Fan Messages) ── */
-        .right-panel {
-            background: rgba(20, 10, 40, 0.8);
-            border-radius: 2rem;
-            border: 2px solid #ff00cc;
-            box-shadow: inset 0 0 40px rgba(255, 0, 204, 0.05), 0 0 30px rgba(255, 0, 204, 0.1);
-            padding: 1.5rem 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-        .right-panel .placeholder-img {
-            width: 100%;
-            aspect-ratio: 1/1;
-            border-radius: 1.5rem;
-            background: linear-gradient(135deg, #1a0b2e, #0a0a0f);
-            border: 2px solid #ffd700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            color: #ffd700;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
-        }
-        .right-panel .msg-title {
-            font-family: 'Press Start 2P', monospace;
-            color: #ff00cc;
-            font-size: 0.7rem;
-            text-align: center;
-            text-shadow: 0 0 20px #ff00cc;
-            border-bottom: 2px solid #ff00cc;
-            padding-bottom: 0.5rem;
-            letter-spacing: 2px;
-        }
-        .right-panel .msg-list {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            max-height: 200px;
-            padding-right: 0.25rem;
-        }
-        .msg-item {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 0.5rem 0.75rem;
-            border-radius: 0.75rem;
-            border-left: 3px solid #ffd700;
             font-family: 'VT323', monospace;
-            font-size: 1rem;
+            font-size: 1.1rem;
             color: #ccc;
+            display: flex;
+            gap: 0.5rem;
         }
-        .msg-item .sender { color: #ffd700; font-weight: bold; }
-        .right-panel .msg-form input,
-        .right-panel .msg-form textarea {
-            width: 100%;
-            background: #0a0a0f;
-            border: 2px solid #ff00cc;
-            border-radius: 0.75rem;
-            padding: 0.5rem 0.75rem;
-            color: #fff;
-            font-family: 'VT323', monospace;
-            font-size: 1rem;
-            margin-bottom: 0.4rem;
-            outline: none;
-            transition: 0.2s;
-        }
-        .right-panel .msg-form input:focus,
-        .right-panel .msg-form textarea:focus { border-color: #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); }
-        .right-panel .msg-form input::placeholder,
-        .right-panel .msg-form textarea::placeholder { color: #555; }
-        .right-panel .msg-form button {
-            width: 100%;
-            background: #ff00cc;
-            color: #fff;
-            border: 2px solid #ffd700;
-            padding: 0.6rem;
-            border-radius: 40px;
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.6rem;
-            cursor: pointer;
-            transition: 0.2s;
-            letter-spacing: 2px;
-        }
-        .right-panel .msg-form button:hover {
-            box-shadow: 0 0 30px rgba(255, 0, 204, 0.3);
-            transform: scale(1.02);
-        }
-
-        /* ── Disco Grid ── */
+        .profile-list li::before { content: "✦"; color: #ff00cc; }
+        /* Disco grid */
         .disco-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
             gap: 0.75rem;
         }
         .disco-card {
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.5);
             border-radius: 1rem;
             padding: 0.75rem;
             text-align: center;
@@ -431,86 +379,42 @@
         .disco-card .icon { font-size: 2rem; margin-bottom: 0.25rem; }
         .disco-card .title { font-family: 'VT323', monospace; color: #fff; font-size: 0.9rem; }
         .disco-card .year { color: #888; font-size: 0.7rem; }
-
-        /* ── Music Player (Arcade Style) ── */
-        .music-player-arcade {
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid #ffd700;
-            border-radius: 1rem;
-            padding: 0.75rem 1rem;
+        /* Album timeline */
+        .album-era {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
             flex-wrap: wrap;
             gap: 0.5rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.05);
-        }
-        .music-player-arcade .track-info {
-            display: flex;
-            align-items: baseline;
-            gap: 0.5rem;
-            font-family: 'VT323', monospace;
-        }
-        .music-player-arcade .track-info .title {
-            color: #ffd700;
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-        .music-player-arcade .track-info .artist { color: #888; font-size: 1rem; }
-        .music-player-arcade .controls {
-            display: flex;
-            gap: 0.5rem;
+            margin-bottom: 0.75rem;
             align-items: center;
         }
-        .music-player-arcade .controls button {
-            background: none;
-            border: none;
-            color: #00f3ff;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: 0.2s;
-            font-family: 'VT323', monospace;
+        .album-era .era-label {
+            font-family: 'Press Start 2P', monospace;
+            color: #ff00cc;
+            font-size: 0.6rem;
+            min-width: 60px;
         }
-        .music-player-arcade .controls button:hover {
-            color: #ffd700;
-            text-shadow: 0 0 20px #ffd700;
+        .album-era .pics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
-        .music-player-arcade .controls .play-btn { font-size: 2rem; color: #ff00cc; }
-        .music-player-arcade .controls .play-btn:hover { color: #ffd700; }
-        .record-icon {
-            display: inline-block;
-            animation: spin 2s linear infinite;
-            animation-play-state: paused;
-            font-size: 1.5rem;
-        }
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* ── Toast ── */
-        .toast-container {
-            position: fixed; bottom: 2rem; right: 2rem; z-index: 9000;
-        }
-        .toast {
+        .album-era .pics .placeholder-pic {
+            width: 60px;
+            height: 60px;
             background: #1a0b2e;
-            border: 2px solid #ffd700;
-            color: #fff;
-            padding: 0.75rem 1.5rem;
+            border: 1px solid #ffd700;
             border-radius: 0.75rem;
-            display: none;
+            display: flex;
             align-items: center;
-            gap: 0.75rem;
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.2);
-            font-family: 'VT323', monospace;
-            font-size: 1.2rem;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #ffd700;
+            transition: 0.2s;
         }
-        .toast.show { display: flex; }
-
-        /* ── Random Box ── */
+        .album-era .pics .placeholder-pic:hover { border-color: #ff00cc; transform: scale(1.05); }
+        /* Random box */
         .random-box {
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5);
             border-radius: 1.5rem;
             padding: 2rem;
             text-align: center;
@@ -527,10 +431,10 @@
             background: #ff00cc;
             border: 2px solid #ffd700;
             color: #fff;
-            padding: 0.75rem 2rem;
+            padding: 0.5rem 1.5rem;
             border-radius: 40px;
             font-family: 'Press Start 2P', monospace;
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             cursor: pointer;
             transition: 0.2s;
             box-shadow: 0 0 30px rgba(255, 0, 204, 0.3);
@@ -538,12 +442,181 @@
         }
         .random-box .btn-spin:hover { box-shadow: 0 0 60px rgba(255, 0, 204, 0.6); transform: scale(1.05); }
 
+        /* ── Right: Fan Messages ── */
+        .side-panel {
+            background: rgba(20, 10, 40, 0.7);
+            border-radius: 2rem;
+            border: 2px solid #ff00cc;
+            box-shadow: inset 0 0 40px rgba(255, 0, 204, 0.05), 0 0 30px rgba(255, 0, 204, 0.1);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-height: 60vh;
+            overflow: hidden;
+        }
+        .side-panel .placeholder-img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            border-radius: 1.5rem;
+            background: linear-gradient(135deg, #1a0b2e, #0a0a0f);
+            border: 2px solid #ffd700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #ffd700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
+        }
+        .side-panel .msg-title {
+            font-family: 'Press Start 2P', monospace;
+            color: #ff00cc;
+            font-size: 0.6rem;
+            text-align: center;
+            text-shadow: 0 0 20px #ff00cc;
+            border-bottom: 2px solid #ff00cc;
+            padding-bottom: 0.3rem;
+            letter-spacing: 2px;
+        }
+        .side-panel .msg-list {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            max-height: 150px;
+            padding-right: 0.25rem;
+        }
+        .msg-item {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 0.4rem 0.6rem;
+            border-radius: 0.5rem;
+            border-left: 3px solid #ffd700;
+            font-family: 'VT323', monospace;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        .msg-item .sender { color: #ffd700; font-weight: bold; }
+        .side-panel .msg-form input,
+        .side-panel .msg-form textarea {
+            width: 100%;
+            background: #0a0a0f;
+            border: 2px solid #ff00cc;
+            border-radius: 0.75rem;
+            padding: 0.4rem 0.6rem;
+            color: #fff;
+            font-family: 'VT323', monospace;
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+            outline: none;
+            transition: 0.2s;
+        }
+        .side-panel .msg-form input:focus,
+        .side-panel .msg-form textarea:focus { border-color: #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); }
+        .side-panel .msg-form input::placeholder,
+        .side-panel .msg-form textarea::placeholder { color: #555; }
+        .side-panel .msg-form button {
+            width: 100%;
+            background: #ff00cc;
+            color: #fff;
+            border: 2px solid #ffd700;
+            padding: 0.4rem;
+            border-radius: 40px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.5rem;
+            cursor: pointer;
+            transition: 0.2s;
+            letter-spacing: 2px;
+        }
+        .side-panel .msg-form button:hover {
+            box-shadow: 0 0 30px rgba(255, 0, 204, 0.3);
+            transform: scale(1.02);
+        }
+
+        /* ── Music Player (always at bottom) ── */
+        .music-player-bar {
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(8px);
+            border-top: 3px solid #ff00cc;
+            box-shadow: 0 -4px 30px rgba(255, 0, 204, 0.2);
+            padding: 8px 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            position: sticky;
+            bottom: 0;
+            z-index: 100;
+        }
+        .music-player-bar .track-info {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            font-family: 'VT323', monospace;
+        }
+        .music-player-bar .track-info .title {
+            color: #ffd700;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .music-player-bar .track-info .artist { color: #888; font-size: 1rem; }
+        .music-player-bar .controls {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .music-player-bar .controls button {
+            background: none;
+            border: none;
+            color: #00f3ff;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'VT323', monospace;
+        }
+        .music-player-bar .controls button:hover {
+            color: #ffd700;
+            text-shadow: 0 0 20px #ffd700;
+        }
+        .music-player-bar .controls .play-btn { font-size: 1.8rem; color: #ff00cc; }
+        .music-player-bar .controls .play-btn:hover { color: #ffd700; }
+        .record-icon {
+            display: inline-block;
+            animation: spin 2s linear infinite;
+            animation-play-state: paused;
+            font-size: 1.5rem;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* ── Toast ── */
+        .toast-container {
+            position: fixed; bottom: 6rem; right: 2rem; z-index: 9000;
+        }
+        .toast {
+            background: #1a0b2e;
+            border: 2px solid #ffd700;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 0.75rem;
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.2);
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+        }
+        .toast.show { display: flex; }
+
         /* ── Back to Top ── */
         #backToTop {
-            position: fixed; bottom: 6rem; right: 2rem; z-index: 999;
+            position: fixed; bottom: 6rem; left: 2rem; z-index: 999;
             background: #ff00cc; color: #fff; border: 2px solid #ffd700;
-            width: 48px; height: 48px; border-radius: 9999px;
-            font-size: 1.5rem; cursor: pointer;
+            width: 40px; height: 40px; border-radius: 9999px;
+            font-size: 1.2rem; cursor: pointer;
             box-shadow: 0 0 30px rgba(255, 0, 204, 0.3);
             opacity: 0; transition: 0.3s;
             font-family: 'VT323', monospace;
@@ -581,76 +654,70 @@
         </div>
     </div>
 
-    <!-- ===== MAIN APP ===== -->
+    <!-- ===== MAIN ARCADE APP ===== -->
     <div id="mainApp">
+        <!-- Top Bar -->
         <div class="top-bar">
             <h1>✦ VERNON ARCADE ✦</h1>
             <p>▶ PRESS SELECT TO EXPLORE ◀</p>
         </div>
 
-        <div class="arcade-grid">
-            <!-- LEFT: JOYSTICK -->
-            <div class="joystick-panel">
-                <div class="label">▶ CTRL</div>
-                <div class="joystick-base">
-                    <div class="joystick-stick"></div>
-                </div>
-                <div class="dpad">
-                    <button class="dpad-btn dpad-up" id="upBtn">▲</button>
-                    <button class="dpad-btn dpad-left" id="leftBtn">◀</button>
-                    <button class="dpad-btn dpad-center" id="selectBtn">SEL</button>
-                    <button class="dpad-btn dpad-right" id="rightBtn">▶</button>
-                    <button class="dpad-btn dpad-down" id="downBtn">▼</button>
-                </div>
-                <button class="select-btn" id="bigSelectBtn">⚡ SELECT ⚡</button>
-            </div>
-
-            <!-- CENTER -->
-            <div class="center-panel" id="centerPanel">
-                <div class="glow-border"></div>
-                <!-- Music Player (Arcade Style) -->
-                <div class="music-player-arcade">
-                    <div class="track-info">
-                        <span class="record-icon" id="recordIcon">💿</span>
-                        <span class="title" id="trackTitle">Black Eye</span>
-                        <span class="artist" id="trackArtist">/ Vernon</span>
+        <!-- Arcade Container -->
+        <div class="arcade-container">
+            <div class="arcade-machine">
+                <!-- Left: Joystick -->
+                <div class="joystick-panel">
+                    <div class="label">▶ CTRL</div>
+                    <div class="joystick-base">
+                        <div class="joystick-stick"></div>
                     </div>
-                    <div class="controls">
-                        <button onclick="prevTrack()">⏮</button>
-                        <button onclick="togglePlay()" id="playBtn" class="play-btn">▶</button>
-                        <button onclick="nextTrack()">⏭</button>
+                    <div class="dpad">
+                        <button class="dpad-btn dpad-up" id="upBtn">▲</button>
+                        <button class="dpad-btn dpad-left" id="leftBtn">◀</button>
+                        <button class="dpad-btn dpad-center" id="selectBtn">SEL</button>
+                        <button class="dpad-btn dpad-right" id="rightBtn">▶</button>
+                        <button class="dpad-btn dpad-down" id="downBtn">▼</button>
                     </div>
-                    <audio id="audioPlayer"></audio>
+                    <button class="select-btn" id="bigSelectBtn">⚡ SELECT ⚡</button>
                 </div>
 
-                <h2 id="tabTitle">✦ PROFILE ✦</h2>
-                <div id="tabContent">
-                    <ul>
-                        <li>Born February 18, 1998 in New York City</li>
-                        <li>Fluent in English and Korean</li>
-                        <li>Member of SEVENTEEN's Hip-Hop Team</li>
-                        <li>Has writing credits on many SEVENTEEN songs</li>
-                        <li>Known for witty humor and unique fashion</li>
-                        <li>His favorite color is black</li>
-                        <li>Has a cat named 'Kkamang'</li>
-                    </ul>
+                <!-- Center: Arcade Screen -->
+                <div class="arcade-screen" id="arcadeScreen">
+                    <div class="screen-content" id="screenContent">
+                        <!-- Content will be injected by JavaScript -->
+                    </div>
                 </div>
-            </div>
 
-            <!-- RIGHT: Fan Messages -->
-            <div class="right-panel">
-                <div class="placeholder-img">💿</div>
-                <div class="msg-title">✧ FAN MESSAGES ✧</div>
-                <div class="msg-list" id="msgList">
-                    <div class="msg-item"><span class="sender">CARAT</span> "Vernon is so talented!"</div>
-                    <div class="msg-item"><span class="sender">HANSOLFAN</span> "Love his vibe and music."</div>
+                <!-- Right: Fan Messages -->
+                <div class="side-panel">
+                    <div class="placeholder-img" id="sideThumb">💿</div>
+                    <div class="msg-title">✧ FAN MESSAGES ✧</div>
+                    <div class="msg-list" id="msgList">
+                        <div class="msg-item"><span class="sender">CARAT</span> "Vernon is so talented!"</div>
+                        <div class="msg-item"><span class="sender">HANSOLFAN</span> "Love his vibe and music."</div>
+                    </div>
+                    <form class="msg-form" id="msgForm">
+                        <input type="text" id="msgName" placeholder="YOUR NAME..." maxlength="20" required />
+                        <textarea id="msgContent" placeholder="YOUR MESSAGE..." rows="2" maxlength="200" required></textarea>
+                        <button type="submit">SEND MESSAGE</button>
+                    </form>
                 </div>
-                <form class="msg-form" id="msgForm">
-                    <input type="text" id="msgName" placeholder="YOUR NAME..." maxlength="20" required />
-                    <textarea id="msgContent" placeholder="YOUR MESSAGE..." rows="2" maxlength="200" required></textarea>
-                    <button type="submit">SEND MESSAGE</button>
-                </form>
             </div>
+        </div>
+
+        <!-- Music Player (always at bottom) -->
+        <div class="music-player-bar">
+            <div class="track-info">
+                <span class="record-icon" id="recordIcon">💿</span>
+                <span class="title" id="trackTitle">Black Eye</span>
+                <span class="artist" id="trackArtist">/ Vernon</span>
+            </div>
+            <div class="controls">
+                <button onclick="prevTrack()">⏮</button>
+                <button onclick="togglePlay()" id="playBtn" class="play-btn">▶</button>
+                <button onclick="nextTrack()">⏭</button>
+            </div>
+            <audio id="audioPlayer"></audio>
         </div>
     </div>
 
@@ -723,55 +790,88 @@
         }
         loadTrack(0);
 
-        // ── TAB DATA ──
+        // ── TAB DATA (Projects) ──
         const tabs = [
             {
+                title: '✦ SINGLE PROJECT ✦',
+                content: `
+                    <div style="text-align: center; padding: 1rem 0;">
+                        <p class="project-description" style="font-size: 1.4rem;">
+                            No matter how far we go alone without our outcasters,<br>
+                            we will still stand and <span class="highlight">unveritable</span>.
+                        </p>
+                        <p style="font-family: 'VT323', monospace; color: #888; margin-top: 1rem; font-size: 1rem;">
+                            <span class="gold">✦ ENERVATE COMPANY 2024 © ✦</span>
+                        </p>
+                        <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem;">
+                            <span style="background: #1a0b2e; padding: 0.25rem 0.75rem; border-radius: 20px; border: 1px solid #ffd700; font-size: 0.8rem;">🎮 ARCADE</span>
+                            <span style="background: #1a0b2e; padding: 0.25rem 0.75rem; border-radius: 20px; border: 1px solid #ff00cc; font-size: 0.8rem;">💿 VERNON</span>
+                        </div>
+                    </div>
+                `
+            },
+            {
                 title: '✦ PROFILE ✦',
-                content: `<ul>
-                    <li>Born February 18, 1998 in New York City</li>
-                    <li>Fluent in English and Korean</li>
-                    <li>Member of SEVENTEEN's Hip-Hop Team</li>
-                    <li>Has writing credits on many SEVENTEEN songs</li>
-                    <li>Known for witty humor and unique fashion</li>
-                    <li>His favorite color is black</li>
-                    <li>Has a cat named 'Kkamang'</li>
-                </ul>`
+                content: `
+                    <ul class="profile-list">
+                        <li>Born February 18, 1998 in New York City</li>
+                        <li>Fluent in English and Korean</li>
+                        <li>Member of SEVENTEEN's Hip-Hop Team</li>
+                        <li>Has writing credits on many SEVENTEEN songs</li>
+                        <li>Known for witty humor and unique fashion</li>
+                        <li>His favorite color is black</li>
+                        <li>Has a cat named 'Kkamang'</li>
+                    </ul>
+                `
             },
             {
                 title: '🎵 DISCOGRAPHY',
-                content: `<div class="disco-grid">
-                    <div class="disco-card"><div class="icon">💿</div><div class="title">17 Is Right Here</div><div class="year">2024 · Best</div></div>
-                    <div class="disco-card"><div class="icon">💿</div><div class="title">Spill The Feels</div><div class="year">2024 · Mini 12</div></div>
-                    <div class="disco-card"><div class="icon">💿</div><div class="title">FML</div><div class="year">2023 · Mini 10</div></div>
-                    <div class="disco-card"><div class="icon">💿</div><div class="title">17 Carat</div><div class="year">2015 · Debut</div></div>
-                </div>`
+                content: `
+                    <div class="disco-grid">
+                        <div class="disco-card"><div class="icon">💿</div><div class="title">17 Is Right Here</div><div class="year">2024 · Best</div></div>
+                        <div class="disco-card"><div class="icon">💿</div><div class="title">Spill The Feels</div><div class="year">2024 · Mini 12</div></div>
+                        <div class="disco-card"><div class="icon">💿</div><div class="title">FML</div><div class="year">2023 · Mini 10</div></div>
+                        <div class="disco-card"><div class="icon">💿</div><div class="title">17 Carat</div><div class="year">2015 · Debut</div></div>
+                    </div>
+                `
             },
             {
                 title: '📸 ALBUMS',
-                content: `<div>
-                    <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
-                        <span style="color:#ff00cc;font-weight:bold;font-family:'Press Start 2P',monospace;font-size:0.6rem;min-width:60px;">2024</span>
-                        <span style="background:#1a0b2e;padding:0.25rem 0.75rem;border-radius:20px;border:1px solid #ffd700;">🔥 Super</span>
-                        <span style="background:#1a0b2e;padding:0.25rem 0.75rem;border-radius:20px;border:1px solid #ff00cc;">✨ Maestro</span>
+                content: `
+                    <div>
+                        <div class="album-era">
+                            <span class="era-label">2024</span>
+                            <div class="pics">
+                                <div class="placeholder-pic">🔥</div>
+                                <div class="placeholder-pic">✨</div>
+                                <div class="placeholder-pic">💫</div>
+                            </div>
+                        </div>
+                        <div class="album-era">
+                            <span class="era-label">2023</span>
+                            <div class="pics">
+                                <div class="placeholder-pic">🌊</div>
+                                <div class="placeholder-pic">🔥</div>
+                            </div>
+                        </div>
+                        <div class="album-era">
+                            <span class="era-label">2015</span>
+                            <div class="pics">
+                                <div class="placeholder-pic">🌟</div>
+                            </div>
+                        </div>
                     </div>
-                    <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
-                        <span style="color:#ff00cc;font-weight:bold;font-family:'Press Start 2P',monospace;font-size:0.6rem;min-width:60px;">2023</span>
-                        <span style="background:#1a0b2e;padding:0.25rem 0.75rem;border-radius:20px;border:1px solid #ffd700;">🌊 Super</span>
-                        <span style="background:#1a0b2e;padding:0.25rem 0.75rem;border-radius:20px;border:1px solid #ff00cc;">🔥 FML</span>
-                    </div>
-                    <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
-                        <span style="color:#ff00cc;font-weight:bold;font-family:'Press Start 2P',monospace;font-size:0.6rem;min-width:60px;">2015</span>
-                        <span style="background:#1a0b2e;padding:0.25rem 0.75rem;border-radius:20px;border:1px solid #ffd700;">🌟 Adore U</span>
-                    </div>
-                </div>`
+                `
             },
             {
                 title: '🎰 RANDOM',
-                content: `<div class="random-box">
-                    <p style="color:#888;font-family:'VT323',monospace;font-size:1rem;">PRESS SELECT TO GET A RANDOM FACT</p>
-                    <p class="quote" id="randomQuote">"Time is gold."</p>
-                    <button class="btn-spin" id="spinBtn">⟳ SPIN</button>
-                </div>`
+                content: `
+                    <div class="random-box">
+                        <p style="color:#888;font-family:'VT323',monospace;font-size:1rem;">PRESS SELECT TO GET A RANDOM FACT</p>
+                        <p class="quote" id="randomQuote">"Time is gold."</p>
+                        <button class="btn-spin" id="spinBtn">⟳ SPIN</button>
+                    </div>
+                `
             }
         ];
 
@@ -781,9 +881,13 @@
             if (index < 0) index = tabs.length - 1;
             if (index >= tabs.length) index = 0;
             currentTab = index;
-            document.getElementById('tabTitle').textContent = tabs[index].title;
-            document.getElementById('tabContent').innerHTML = tabs[index].content;
-            // Re-bind random quote button if it exists
+            const screen = document.getElementById('screenContent');
+            screen.innerHTML = `<div class="project-title">${tabs[index].title}</div>` + tabs[index].content;
+            // Update side thumbnail with random emoji (placeholder)
+            const emojis = ['💿', '🎤', '🎸', '🌟', '✨', '🔥', '💫', '🎶'];
+            document.getElementById('sideThumb').textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+            // Re-bind spin button if exists
             const spinBtn = document.getElementById('spinBtn');
             if (spinBtn) {
                 spinBtn.addEventListener('click', function() {
@@ -863,16 +967,12 @@
         }
 
         function isKeyboardSpam(text) {
-            // Check for repetitive characters (e.g., "asdfasdf" or "kkkkkk")
             const trimmed = text.trim();
             if (trimmed.length < 3) return false;
-            // Count unique characters
             const unique = new Set(trimmed.toLowerCase());
             if (unique.size <= 2) return true;
-            // Check for repeated patterns (e.g., "abcabcabc")
             const pattern = trimmed.match(/(.+)\1{2,}/);
             if (pattern && pattern[1].length >= 2) return true;
-            // Check for excessive repeated single characters (e.g., "aaaaaa")
             if (/(.)\1{5,}/.test(trimmed)) return true;
             return false;
         }
@@ -883,78 +983,39 @@
             return hateTerms.some(term => lower.includes(term));
         }
 
-        // ── MESSAGE FORM VALIDATION ──
         document.getElementById('msgForm').addEventListener('submit', function(e) {
             e.preventDefault();
-
             const nameInput = document.getElementById('msgName');
             const msgInput = document.getElementById('msgContent');
             const name = nameInput.value.trim();
             const msg = msgInput.value.trim();
 
-            // Empty check
-            if (!name || !msg) {
-                showToast('⚠️ Please fill in both fields.');
-                return;
-            }
+            if (!name || !msg) { showToast('⚠️ Please fill in both fields.'); return; }
+            if (name.length > 20) { showToast('⚠️ Name must be under 20 characters.'); return; }
+            if (msg.length > 200) { showToast('⚠️ Message must be under 200 characters.'); return; }
+            if (containsProfanity(name) || containsProfanity(msg)) { showToast('⚠️ Please avoid using inappropriate language.'); return; }
+            if (containsHateSpeech(name) || containsHateSpeech(msg)) { showToast('⚠️ Please keep messages respectful and kind.'); return; }
+            if (isKeyboardSpam(msg)) { showToast('⚠️ Please write a meaningful message (no spam).'); return; }
 
-            // Length check
-            if (name.length > 20) {
-                showToast('⚠️ Name must be under 20 characters.');
-                return;
-            }
-            if (msg.length > 200) {
-                showToast('⚠️ Message must be under 200 characters.');
-                return;
-            }
-
-            // Profanity check
-            if (containsProfanity(name) || containsProfanity(msg)) {
-                showToast('⚠️ Please avoid using inappropriate language.');
-                return;
-            }
-
-            // Hate speech check
-            if (containsHateSpeech(name) || containsHateSpeech(msg)) {
-                showToast('⚠️ Please keep messages respectful and kind.');
-                return;
-            }
-
-            // Keyboard spam check
-            if (isKeyboardSpam(msg)) {
-                showToast('⚠️ Please write a meaningful message (no spam).');
-                return;
-            }
-
-            // All validations passed – add message
             const list = document.getElementById('msgList');
             const div = document.createElement('div');
             div.className = 'msg-item';
             div.innerHTML = `<span class="sender">${escapeHtml(name)}</span> "${escapeHtml(msg)}"`;
             list.appendChild(div);
-
-            // Clear form
             nameInput.value = '';
             msgInput.value = '';
-
             showToast('💬 Message sent! ✦');
         });
 
-        // Simple escape function to prevent XSS
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
 
-        // ── REAL-TIME CHARACTER COUNTER ──
         document.getElementById('msgContent').addEventListener('input', function() {
-            const remaining = 200 - this.value.length;
-            if (remaining < 0) {
-                this.value = this.value.slice(0, 200);
-            }
+            if (this.value.length > 200) this.value = this.value.slice(0, 200);
         });
     </script>
-
 </body>
 </html>
