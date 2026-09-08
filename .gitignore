@@ -1,0 +1,15 @@
+node_modules/
+.env
+*.log
+*.db
+.DS_Store
+.vscode/
+package-lock.json
+npm-debug.log
+dist/
+build/
+/*.user
+/*.suo
+bin/
+obj/
+*.vs/**
